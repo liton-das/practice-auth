@@ -4,6 +4,7 @@ const sendMail = require("../helpers/sendMail");
 const auth = require("../model/auth");
 const mailTemplate = require("../helpers/mailTemplate");
 const otpGenerator = require("../helpers/otpGenerator");
+const otpExpireTimeGenerator = require("../helpers/otpExpireGenerator");
 const registerController = async (req, res) => {
   try {
     // get user information from client
@@ -32,7 +33,8 @@ const registerController = async (req, res) => {
         password:hashed,
         address,
         otp,
-        userRole
+        userRole,
+        otpExpireTime:otpExpireTimeGenerator()
     })
    await user.save()
    return res.status(201).json({message:'user created successfully'},user)
