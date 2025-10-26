@@ -11,13 +11,12 @@ const transporter = nodemailer.createTransport({
 });
 
 // sendMail
-const sendMail = async(mailTo,sub)=>{
+const sendMail = async(mailTo,sub,template)=>{
     const info = await transporter.sendMail({
-    from: '"Maddison Foo Koch" priyankadas88439@gmail.com',
+    from: '"Maddison Foo Koch"priyankadas88439@gmail.com',
     to: mailTo,
     subject: sub,
-    text: "Hello world?", // plain‑text body
-    html: "<b>Hello world?</b>", // HTML body
+    html: template, // HTML body
   });
 }
 module.exports = sendMail

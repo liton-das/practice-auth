@@ -2,6 +2,8 @@ const { passwordRegex, emailRegex } = require("../helpers/regex");
 const bcrypt = require('bcrypt');
 const sendMail = require("../helpers/sendMail");
 const auth = require("../model/auth");
+const mailTemplate = require("../helpers/mailTemplate");
+const otpGenerator = require("../helpers/otpGenerator");
 const registerController = async (req, res) => {
   try {
     // get user information from client
@@ -20,13 +22,16 @@ const registerController = async (req, res) => {
         return res.status(401).json({message:'email is Invalid!'})
     }
     const hashed = await bcrypt.hash(password,10)
-    sendMail(email,'hi liton')
+ 
+    const otp =otpGenerator()
+    sendMail(email,`Sub`,mailTemplate(userName,otp))
     const user= new auth({
         userName,
         email,
         phone,
         password:hashed,
         address,
+        otp,
         userRole
     })
    await user.save()
