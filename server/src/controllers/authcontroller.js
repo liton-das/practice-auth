@@ -5,6 +5,7 @@ const auth = require("../model/auth");
 const mailTemplate = require("../helpers/mailTemplate");
 const otpGenerator = require("../helpers/otpGenerator");
 const otpExpireTimeGenerator = require("../helpers/otpExpireGenerator");
+const jwt = require ('jsonwebtoken')
 const registerController = async (req, res) => {
   try {
     // get user information from client
@@ -87,8 +88,38 @@ const resendOtpController = async(req,res)=>{
     return res.status(500).json({message:'Internal server error',error})
   }
 }
+// login controller 
+const loginController =async(req,res)=>{
+  try {
+    const {email, password} = req.body
+    // let my=emailRegex.test(email)
+    const user = await auth.findOne({email})
+    return console.log(user)
+    if(!email) return res.status(404).json({message:'Email field is required!'})
+    if(emailRegex.test(email)) return res.status(401).json({message:'Invalid creadintial!'})
+    if(passwordRegex.test(password)) return res.status(401).json({message:'Invalid creadintial!'})
+    const isMatch = await bcrypt.compare(user.password,password)
+    if(!user) return res.status(401).json({message:'user not found'})
+    if(!isMatch) return res.status(404).json({message:'Invalid creadintial!'})
+      const token = jwt.sign({
+        email,
+        password
+    },process.env.SECRET_KEY,{expiresIn:'1h'})
+    const userInfo={
+      userName:user.userName,
+      userEmail:user.email,
+      userPhone: user.phone,
+      userAddress : user.address,
+    }
+    return res.status(200).json({message:'Login successfully'},userInfo,token)
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({message:'Internal server error',error})
+  }
+}
 module.exports = {
     registerController,
     verifyOtpController,
-    resendOtpController
+    resendOtpController,
+    loginController
 }
