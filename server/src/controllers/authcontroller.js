@@ -67,7 +67,28 @@ const verifyOtpController=async(req,res)=>{
     return res.status(500).json({message:'Internal server error',error})
   }
 }
+
+// resend otp controller
+const resendOtpController = async(req,res)=>{
+  try {
+    const {email} = req.body
+    if(!email) return res.status(404).json({message:'This email has no account!'})
+    const existUser = await auth.findOne({email})
+  if(!existUser){return res.status(401).json({message:'Please register first to get otp!'})}
+  const otpGenerate = otpGenerator()
+  const otpExpire = otpExpireTimeGenerator()
+  existUser.otp = otpGenerate,
+  existUser.otpExpireTime = otpExpire
+  sendMail(email,'Resend your otp',mailTemplate(existUser.userName,otpGenerate))
+  await existUser.save()
+  return res.status(200).json({message:'Otp send success'})
+} catch (error) {
+    console.log(error)
+    return res.status(500).json({message:'Internal server error',error})
+  }
+}
 module.exports = {
     registerController,
-    verifyOtpController
+    verifyOtpController,
+    resendOtpController
 }
