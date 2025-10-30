@@ -22,6 +22,10 @@ const registerController = async (req, res) => {
     if(!emailRegex.test(email)){
         return res.status(401).json({message:'email is Invalid!'})
     }
+    const existsUser = await auth.findOne({email})
+    if(existsUser){
+      return res.status(401).json({message:'user email alredy exists!'})
+    }
     const hashed = await bcrypt.hash(password,10)
  
     const otp =otpGenerator()
