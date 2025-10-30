@@ -46,6 +46,28 @@ const registerController = async (req, res) => {
     return res.status(500).json({ message: "Internal server error", error });
   }
 };
+// verify otp controller 
+const verifyOtpController=async(req,res)=>{
+  try {
+    const {otp} = req.body
+    if(!otp){return res.status(401).json({message:'Otp is required!'})}
+    const existOtp = await auth.findOne({otp})
+    if(!existOtp){ return res.status(401).json({message:'Your otp not verified!'})}
+    const expireOtpTime = new Date(Date.now()) 
+    if(existOtp.otpExpireTime < expireOtpTime){
+      return res.status(401).json({message:'Your otp verification time expired!'})
+    }
+    existOtp.otp = null,
+    existOtp.otpExpireTime = null
+    existOtp.isVerify= true
+    await existOtp.save()
+    return res.status(200).json({message:'Otp verified success'},existOtp)
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({message:'Internal server error',error})
+  }
+}
 module.exports = {
-    registerController
+    registerController,
+    verifyOtpController
 }
