@@ -92,31 +92,32 @@ const resendOtpController = async(req,res)=>{
 const loginController =async(req,res)=>{
   try {
     const {email, password} = req.body
-    // let my=emailRegex.test(email)
-    const user = await auth.findOne({email})
-    return console.log(user)
+    
     if(!email) return res.status(404).json({message:'Email field is required!'})
-    if(emailRegex.test(email)) return res.status(401).json({message:'Invalid creadintial!'})
-    if(passwordRegex.test(password)) return res.status(401).json({message:'Invalid creadintial!'})
-    const isMatch = await bcrypt.compare(user.password,password)
-    if(!user) return res.status(401).json({message:'user not found'})
-    if(!isMatch) return res.status(404).json({message:'Invalid creadintial!'})
+      if(!emailRegex.test(email)) return res.status(401).json({message:'Invalid creadintial!'})
+      if(!passwordRegex.test(password)) return res.status(401).json({message:'Invalid creadintial!'})
+      const user = await auth.findOne({email:email.trim().toLowerCase()})
+      if(!user) return res.status(401).json({message:'user not found'})
+      const isMatch = await bcrypt.compare(password,user.password)
+      if(!isMatch) return res.status(404).json({message:'Invalid creadintial!'})
       const token = jwt.sign({
-        email,
-        password
+        email:user.email,
+        role:user.userRole
     },process.env.SECRET_KEY,{expiresIn:'1h'})
     const userInfo={
       userName:user.userName,
       userEmail:user.email,
       userPhone: user.phone,
       userAddress : user.address,
+      avater:user.avater
     }
-    return res.status(200).json({message:'Login successfully'},userInfo,token)
+    return res.status(200).json({userInfo,accessToken:token})
   } catch (error) {
     console.log(error)
     return res.status(500).json({message:'Internal server error',error})
   }
 }
+
 module.exports = {
     registerController,
     verifyOtpController,
