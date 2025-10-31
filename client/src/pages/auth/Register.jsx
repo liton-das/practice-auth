@@ -3,16 +3,16 @@ import { FaUser, FaEnvelope, FaPhoneAlt, FaLock, FaMapMarkerAlt } from "react-ic
 
 const RegistrationForm = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-6">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 p-6">
       <div className="bg-white/90 backdrop-blur-md shadow-2xl rounded-3xl w-full max-w-lg p-10 transition-transform hover:scale-[1.02] duration-300">
-        <h2 className="text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-600 mb-10">
+        <h2 className="text-4xl font-extrabold text-center text-transparent bg-clip-text bg-linear-to-r from-indigo-600 to-pink-600 mb-10">
           Register Account
         </h2>
 
         <form className="space-y-6">
           {/* Username */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+            <label className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
               <FaUser className="text-indigo-600" /> Username
             </label>
             <input
@@ -24,7 +24,7 @@ const RegistrationForm = () => {
 
           {/* Email */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+            <label className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
               <FaEnvelope className="text-indigo-600" /> Email
             </label>
             <input
@@ -36,7 +36,7 @@ const RegistrationForm = () => {
 
           {/* Phone */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+            <label className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
               <FaPhoneAlt className="text-indigo-600" /> Phone
             </label>
             <input
@@ -48,7 +48,7 @@ const RegistrationForm = () => {
 
           {/* Address */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+            <label className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
               <FaMapMarkerAlt className="text-indigo-600" /> Address
             </label>
             <textarea
@@ -60,7 +60,7 @@ const RegistrationForm = () => {
 
           {/* Password */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+            <label className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
               <FaLock className="text-indigo-600" /> Password
             </label>
             <input
@@ -72,7 +72,7 @@ const RegistrationForm = () => {
 
           {/* Confirm Password */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+            <label className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
               <FaLock className="text-indigo-600" /> Confirm Password
             </label>
             <input
@@ -86,7 +86,7 @@ const RegistrationForm = () => {
           <div className="pt-4">
             <button
               type="submit"
-              className="w-full cursor-pointer py-3 bg-gradient-to-r from-indigo-600 to-pink-600 text-white rounded-xl font-semibold hover:from-indigo-700 hover:to-pink-700 transition-all shadow-lg"
+              className="w-full cursor-pointer py-3 bg-linear-to-r from-indigo-600 to-pink-600 text-white rounded-xl font-semibold hover:from-indigo-700 hover:to-pink-700 transition-all shadow-lg"
             >
               Create Account
             </button>
