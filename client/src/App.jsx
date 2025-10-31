@@ -2,8 +2,8 @@ import React from 'react'
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router'
 import LayoutesOne from './layoutes/LayoutesOne'
 import Home from './pages/Home'
-import Register from './pages/auth/Register'
 import Login from './pages/auth/Login'
+import RegistrationForm from './pages/auth/Register'
 const App = () => {
   const router = createBrowserRouter(createRoutesFromElements(
     <Route>
@@ -11,7 +11,7 @@ const App = () => {
           <Route index element={<Home/>}/>
       </Route>
       {/* Auth Routes */}
-      <Route path='/register' element={<Register/>}/>
+      <Route path='/register' element={<RegistrationForm/>}/>
       <Route path='/login' element={<Login/>}/>
     </Route>
   ))
