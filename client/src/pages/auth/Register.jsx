@@ -23,7 +23,6 @@ const RegistrationForm = () => {
         }))
         setError('')
     }
-    console.log(inputField)
     // handle submit function 
     const handleSubmit = (e)=>{
       e.preventDefault()
@@ -43,7 +42,6 @@ const RegistrationForm = () => {
         console.log('Form submitted successfully:',inputField)
       }
     }
-  
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 p-6">
       <div className="bg-white/90 backdrop-blur-md shadow-2xl rounded-3xl w-full max-w-lg p-10 transition-transform hover:scale-[1.02] duration-300">
@@ -72,5 +70,4 @@ const RegistrationForm = () => {
     </div>
   );
 };
-
 export default RegistrationForm;
