@@ -4,6 +4,7 @@ import LayoutesOne from './layoutes/LayoutesOne'
 import Home from './pages/Home'
 import Login from './pages/auth/Login'
 import RegistrationForm from './pages/auth/Register'
+import { ToastContainer } from 'react-toastify';
 const App = () => {
   const router = createBrowserRouter(createRoutesFromElements(
     <Route>
@@ -17,6 +18,7 @@ const App = () => {
   ))
   return (
     <>
+      <ToastContainer />
       <RouterProvider router={router}/>
     </>
   )

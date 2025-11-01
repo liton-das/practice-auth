@@ -23,7 +23,6 @@ const useApi = () => {
     postData,
     errors:err
   }
-
 }
 
 export default useApi

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaUser, FaEnvelope, FaPhoneAlt, FaLock, FaMapMarkerAlt } from "react-icons/fa";
 import InputGroup from "../../components/InputGroup";
 import Button from "../../components/Button";
 import fieldError from "../../helpers/FieldError";
-import axios from 'axios'
 import useApi from "../../hooks/useApi";
+import getToastMsg from "../../helpers/toastMsg";
 const INITIAL_DATA = {
     userName:'',
     email:'',
@@ -16,6 +16,8 @@ const RegistrationForm = () => {
     const [inputField,setInputField]=useState({...INITIAL_DATA})
     const [error,setError]=useState('')
     const {postData,allData,loading,errors}=useApi()
+    console.log(errors,'errors')
+    console.log(allData.message,'All Data')
     // handleChange function 
     const handleChange=(e)=>{
         setInputField((prev)=>({
@@ -36,12 +38,18 @@ const RegistrationForm = () => {
       ])
       if(isError){
         setError(isError)
-      }else{
-        postData('http://localhost:8080/auth/register',inputField)
-        setError('')
       }
-        setInputField({...INITIAL_DATA})
+      postData('http://localhost:8080/auth/register',inputField)
+      setError('')
+      setInputField({...INITIAL_DATA})
     }
+    useEffect(()=>{
+      if(errors){
+        return getToastMsg.error(errors)
+      }else{
+        getToastMsg.success(allData.message)
+      }
+    },[allData,errors])
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 p-6">
       <div className="bg-white/90 backdrop-blur-md shadow-2xl rounded-3xl w-full max-w-lg p-10 transition-transform hover:scale-[1.02] duration-300">
