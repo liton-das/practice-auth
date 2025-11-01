@@ -64,7 +64,11 @@ const RegistrationForm = () => {
           <InputGroup error={error.password} autoComplete={'password'} icon={<FaLock className="text-indigo-600" />} name={'password'} onChange={handleChange} value={inputField.password} type={'password'} placeholder={'Enter your password'}  text={'Password'}/>
           {/* Submit Button */}
           <div className="pt-4">
-            <Button btnText={'Create Account'} type={'submit'}/>
+            {
+              
+              loading ?<Button btnText={'Loading>>>>>>〰️〰️〰️<<<<<<'} type={'submit'}/> :
+              <Button btnText={'Create Account'} type={'submit'}/>
+            }
           </div>
         </form>
         <p className="text-center text-sm text-gray-600 mt-6">
