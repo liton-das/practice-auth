@@ -3,7 +3,8 @@ import { FaUser, FaEnvelope, FaPhoneAlt, FaLock, FaMapMarkerAlt } from "react-ic
 import InputGroup from "../../components/InputGroup";
 import Button from "../../components/Button";
 import fieldError from "../../helpers/FieldError";
-
+import axios from 'axios'
+import useApi from "../../hooks/useApi";
 const INITIAL_DATA = {
     userName:'',
     email:'',
@@ -15,6 +16,7 @@ const INITIAL_DATA = {
 const RegistrationForm = () => {
     const [inputField,setInputField]=useState({...INITIAL_DATA})
     const [error,setError]=useState('')
+    const {postData,allData,loading}=useApi()
     // handleChange function 
     const handleChange=(e)=>{
         setInputField((prev)=>({
@@ -24,7 +26,7 @@ const RegistrationForm = () => {
         setError('')
     }
     // handle submit function 
-    const handleSubmit = (e)=>{
+    const handleSubmit =async (e)=>{
       e.preventDefault()
       const isError = fieldError(inputField,[
         'userName',
@@ -38,6 +40,8 @@ const RegistrationForm = () => {
         setError(isError)
         console.log('fields error',isError)
       }else{
+        // set data to the server 
+        postData(``)
         setError('')
         console.log('Form submitted successfully:',inputField)
       }
