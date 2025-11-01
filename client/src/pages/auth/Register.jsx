@@ -15,7 +15,7 @@ const INITIAL_DATA = {
 const RegistrationForm = () => {
     const [inputField,setInputField]=useState({...INITIAL_DATA})
     const [error,setError]=useState('')
-    // const {allData,loading}=useApi('http://localhost:8080/auth/register',inputField)
+    const {postData,allData,loading,errors}=useApi()
     // handleChange function 
     const handleChange=(e)=>{
         setInputField((prev)=>({
@@ -36,17 +36,11 @@ const RegistrationForm = () => {
       ])
       if(isError){
         setError(isError)
-        console.log('fields error',isError)
       }else{
-        // set data to the server 
-         await axios.post('http://localhost:8080/auth/register',inputField).then((response)=>{
-          console.log(response.data)
-        }).catch(e=>{
-          console.log(e)
-        })
+        postData('http://localhost:8080/auth/register',inputField)
         setError('')
-        console.log('Form submitted successfully:',inputField)
       }
+        setInputField({...INITIAL_DATA})
     }
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 p-6">
