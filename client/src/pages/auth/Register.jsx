@@ -10,13 +10,12 @@ const INITIAL_DATA = {
     email:'',
     phone:'',
     password:'',
-    confirm_password:'',
     address:''
 }
 const RegistrationForm = () => {
     const [inputField,setInputField]=useState({...INITIAL_DATA})
     const [error,setError]=useState('')
-    const {postData,allData,loading}=useApi()
+    // const {allData,loading}=useApi('http://localhost:8080/auth/register',inputField)
     // handleChange function 
     const handleChange=(e)=>{
         setInputField((prev)=>({
@@ -33,15 +32,18 @@ const RegistrationForm = () => {
         'email',
         'phone',
         'address',
-        'password',
-        'confirm_password'
+        'password'
       ])
       if(isError){
         setError(isError)
         console.log('fields error',isError)
       }else{
         // set data to the server 
-        postData(``)
+         await axios.post('http://localhost:8080/auth/register',inputField).then((response)=>{
+          console.log(response.data)
+        }).catch(e=>{
+          console.log(e)
+        })
         setError('')
         console.log('Form submitted successfully:',inputField)
       }
@@ -58,7 +60,6 @@ const RegistrationForm = () => {
           <InputGroup error={error.phone} autoComplete={'phone'} icon={<FaPhoneAlt className="text-indigo-600" />} name={'phone'} onChange={handleChange} value={inputField.phone} type={'tel'} placeholder={'Enter your phone number'}  text={'User Name'}/>
           <InputGroup error={error.address} autoComplete={'address'} icon={<FaMapMarkerAlt className="text-indigo-600" />} name={'address'} onChange={handleChange} value={inputField.address} type={'text'} placeholder={'Enter your address'}  text={'Address'}/>
           <InputGroup error={error.password} autoComplete={'password'} icon={<FaLock className="text-indigo-600" />} name={'password'} onChange={handleChange} value={inputField.password} type={'password'} placeholder={'Enter your password'}  text={'Password'}/>
-          <InputGroup error={error.confirm_password} autoComplete={'confirm_password'} icon={<FaLock className="text-indigo-600" />} name={'confirm_password'} onChange={handleChange} value={inputField.confirm_password} type={'password'} placeholder={'Enter your confirm_password'}  text={'Confirm Password'}/>
           {/* Submit Button */}
           <div className="pt-4">
             <Button btnText={'Create Account'} type={'submit'}/>

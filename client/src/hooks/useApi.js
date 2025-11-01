@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 
-const useApi = () => {
-  const [allData,setData] = useState([] || '')
+const useApi = async(url,content) => {
+  const [allData,setData] = useState('')
   const [loading,setLoading]= useState(false)
-  const postData = async(url,content)=>{
+
     setLoading(true)
     try {
         const res = await axios.post(url,content)
@@ -14,11 +14,9 @@ const useApi = () => {
         setLoading(false)
         console.log(error)
     }
-  }
   return{
     allData,
-    loading,
-    postData
+    loading
   }
 
 }
