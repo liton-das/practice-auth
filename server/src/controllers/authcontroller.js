@@ -111,7 +111,7 @@ const loginController =async(req,res)=>{
       userAddress : user.address,
       avater:user.avater
     }
-    return res.status(200).json({userInfo,accessToken:token})
+    return res.status(200).json({message:'Login successfully',userInfo,accessToken:token})
   } catch (error) {
     console.log(error)
     return res.status(500).json({message:'Internal server error',error})
