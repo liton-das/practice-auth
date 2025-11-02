@@ -6,6 +6,7 @@ import InputGroup from '../../components/InputGroup';
 import fieldError from '../../helpers/FieldError';
 import useApi from '../../hooks/useApi';
 import getToastMsg from '../../helpers/toastMsg';
+import Cookies from 'js-cookie'
 const INITIAL_DATA = {
     email:'',
     password:''
@@ -35,6 +36,8 @@ const Login = () => {
         }else{
           // send form data to the server 
           postData('http://localhost:8080/auth/login',inputField)
+          console.log('token', allData.accessToken)
+          Cookies.set('token', allData.accessToken)
           setError('')
           setInputField(INITIAL_DATA)
         }
