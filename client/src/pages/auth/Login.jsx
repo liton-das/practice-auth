@@ -7,6 +7,7 @@ import fieldError from '../../helpers/FieldError';
 import useApi from '../../hooks/useApi';
 import getToastMsg from '../../helpers/toastMsg';
 import Cookies from 'js-cookie'
+import { useNavigate } from 'react-router'
 const INITIAL_DATA = {
     email:'',
     password:''
@@ -14,7 +15,8 @@ const INITIAL_DATA = {
 const Login = () => {
   const [inputField,setInputField]=useState({...INITIAL_DATA})
       const [error,setError]=useState('')
-      const {postData,allData,errors,loading} = useApi()
+      const {postData,allData,errors,loading,token} = useApi()
+      const navigator = useNavigate()
       // handleChange function 
       const handleChange=(e)=>{
           setInputField((prev)=>({
@@ -32,12 +34,10 @@ const Login = () => {
         ])
         if(isError){
           setError(isError)
-          console.log('fields error',isError)
         }else{
           // send form data to the server 
           postData('http://localhost:8080/auth/login',inputField)
-          console.log('token', allData.accessToken)
-          Cookies.set('token', allData.accessToken)
+          navigator('/')
           setError('')
           setInputField(INITIAL_DATA)
         }
@@ -45,11 +45,14 @@ const Login = () => {
     useEffect(()=>{
       if(errors){
         getToastMsg.error(errors)
-      }else{
+      }else{setInterval
         getToastMsg.success(allData.message)
+        
       }
-    },[allData,errors])
-    console.log(allData)
+      if(allData.accessToken){
+        Cookies.set('token', token)
+      }
+    },[allData,errors,token])
   return (
     <>
       <div className="min-h-screen flex items-center justify-center bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 p-6">

@@ -5,11 +5,13 @@ const useApi = () => {
   const [allData,setData] = useState('')
   const [loading,setLoading]= useState(false)
   const [err,setError] = useState('')
+  const [token,setToken]=useState(null)
   const postData = async(url,content)=>{
     setLoading(true)
     try {
         const res = await axios.post(url,content)
         setData(res.data)
+        setToken(res.data.accessToken)
         setLoading(false)
     } catch (error) {
         setError(error.response.data.message || error.data.message)
@@ -21,7 +23,8 @@ const useApi = () => {
     allData,
     loading,
     postData,
-    errors:err
+    errors:err,
+    token
   }
 }
 
