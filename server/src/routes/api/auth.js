@@ -7,7 +7,7 @@ authApi.post('/register',registerController)
 authApi.post('/verifyOtp',verifyOtpController)
 authApi.post('/login',loginController)
 authApi.get('/resendOtp',resendOtpController)
-authApi.post('/updateProfile',upload.single('avatar'),updateProfileController)
+authApi.post('/updateProfile',verifyToken,upload.single('avatar'),updateProfileController)
 
 
 module.exports = authApi

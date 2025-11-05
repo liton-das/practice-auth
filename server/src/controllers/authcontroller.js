@@ -149,7 +149,6 @@ const updateProfileController = async(req,res)=>{
     existUser.address = address
   }
   
-  console.log(filePath)
   if(filePath){
     // Upload an image
      const uploadResult = await cloudinary.uploader
@@ -161,12 +160,16 @@ const updateProfileController = async(req,res)=>{
        )
       
     existUser.avatar = uploadResult.url
-    fs.unlinkSync(filePath)
+    await existUser.save()
+    fs.unlinkSync(filePath,(e)=>{
+      if(e){
+        console.log(e)
+      }
+    })
   }
-  await existUser.save()
-  return res.status(200).json({message:'Profile updated successfully',existUser})
-  } catch (error) {
-    fs.unlinkSync(filePath)
+    return res.status(200).json({message:'Profile updated successfully',existUser})
+    } catch (error) {
+    
     return res.status(500).json({message:'Internal server error!'})
   }
 }
