@@ -12,8 +12,8 @@ const App = () => {
           <Route index element={<Home/>}/>
       </Route>
       {/* Auth Routes */}
-      <Route path='/register' element={<RegistrationForm/>}/>
-      <Route path='/login' element={<Login/>}/>
+      <Route path='/auth/register' element={<RegistrationForm/>}/>
+      <Route path='/auth/login' element={<Login/>}/>
     </Route>
   ))
   return (

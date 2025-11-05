@@ -96,14 +96,14 @@ const loginController =async(req,res)=>{
     if(!email) return res.status(404).json({message:'Email field is required!'})
       if(!emailRegex.test(email)) return res.status(401).json({message:'Invalid creadintial!'})
       if(!passwordRegex.test(password)) return res.status(401).json({message:'Invalid creadintial!'})
-      const user = await auth.findOne({email:email.trim().toLowerCase()})
+      const user = await auth.findOne({email})
       if(!user) return res.status(401).json({message:'user not found'})
       const isMatch = await bcrypt.compare(password,user.password)
       if(!isMatch) return res.status(404).json({message:'Invalid creadintial!'})
       const token = jwt.sign({
         email:user.email,
         role:user.userRole
-    },process.env.SECRET_KEY,{expiresIn:'1h'})
+    },process.env.SECRET_KEY,{expiresIn:'1m'})
     const userInfo={
       userName:user.userName,
       userEmail:user.email,
@@ -117,10 +117,35 @@ const loginController =async(req,res)=>{
     return res.status(500).json({message:'Internal server error',error})
   }
 }
-
+// update4 profile controller 
+const updateProfileController = async(req,res)=>{
+  const {userName,email,phone,password,address} = req.body
+  const existUser = await auth.findOne({email})
+  if(!existUser){
+    return res.status(401).json({message:'Invalid user email!'})
+  }
+  if(userName){
+    existUser.userName=userName
+  }
+  if(email){
+    existUser.email = email
+  }
+  if(phone){
+    existUser.phone = phone
+  }
+  if(password){
+    existUser.password = password
+  }
+  if(address){
+    existUser.address = address
+  }
+  await existUser.save()
+  return res.status(200).json({message:'Profile updated successfully',existUser})
+}
 module.exports = {
     registerController,
     verifyOtpController,
     resendOtpController,
-    loginController
+    loginController,
+    updateProfileController
 }

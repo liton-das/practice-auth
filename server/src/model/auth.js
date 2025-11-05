@@ -7,7 +7,8 @@ const authSchema = new Schema({
     },
     email:{
         type:String,
-        required:true
+        required:true,
+        trim:true
     },
     phone:{
         type:String,
@@ -15,7 +16,8 @@ const authSchema = new Schema({
     },
     password:{
         type:String,
-        required:true
+        required:true,
+        trim:true
     },
     otp:{
         type:String,
