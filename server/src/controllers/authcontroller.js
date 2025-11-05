@@ -5,6 +5,8 @@ const auth = require("../model/auth");
 const mailTemplate = require("../helpers/mailTemplate");
 const otpGenerator = require("../helpers/otpGenerator");
 const otpExpireTimeGenerator = require("../helpers/otpExpireGenerator");
+const cloudinary = require('cloudinary').v2
+const fs = require('fs')
 const jwt = require ('jsonwebtoken')
 const registerController = async (req, res) => {
   try {
@@ -103,24 +105,31 @@ const loginController =async(req,res)=>{
       const token = jwt.sign({
         email:user.email,
         role:user.userRole
-    },process.env.SECRET_KEY,{expiresIn:'1m'})
+    },process.env.SECRET_KEY,{expiresIn:'1h'})
     const userInfo={
       userName:user.userName,
       userEmail:user.email,
       userPhone: user.phone,
       userAddress : user.address,
-      avater:user.avater
+      avatar:user.avatar
     }
     return res.status(200).json({message:'Login successfully',userInfo,accessToken:token})
   } catch (error) {
-    console.log(error)
     return res.status(500).json({message:'Internal server error',error})
   }
 }
 // update4 profile controller 
+// Configuration
+    cloudinary.config({ 
+        cloud_name: 'dwjtuk5wr', 
+        api_key: '596796834932469', 
+        api_secret: 'w3rPiEZ1uAY5ZNJTAQJh8-A80sg' // Click 'View API Keys' above to copy your API secret
+    });
 const updateProfileController = async(req,res)=>{
-  const {userName,email,phone,password,address} = req.body
-  const existUser = await auth.findOne({email})
+  try {
+    const filePath = req.file.path
+    const {userName,email,phone,password,address} = req.body
+  const existUser = await auth.findOne({ email})
   if(!existUser){
     return res.status(401).json({message:'Invalid user email!'})
   }
@@ -139,8 +148,27 @@ const updateProfileController = async(req,res)=>{
   if(address){
     existUser.address = address
   }
+  
+  console.log(filePath)
+  if(filePath){
+    // Upload an image
+     const uploadResult = await cloudinary.uploader
+       .upload(
+          filePath ,
+           {
+               public_id: Date.now(),
+           }
+       )
+      
+    existUser.avatar = uploadResult.url
+    fs.unlinkSync(filePath)
+  }
   await existUser.save()
   return res.status(200).json({message:'Profile updated successfully',existUser})
+  } catch (error) {
+    fs.unlinkSync(filePath)
+    return res.status(500).json({message:'Internal server error!'})
+  }
 }
 module.exports = {
     registerController,

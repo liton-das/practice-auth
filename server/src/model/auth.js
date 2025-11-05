@@ -27,7 +27,7 @@ const authSchema = new Schema({
         type:Date,
         default:null
     },
-    avater:{
+    avatar:{
         type:String,
         default:'avater'
     },
@@ -45,5 +45,6 @@ const authSchema = new Schema({
         default:'user'
     }
 },{timestamps:true})
-
-module.exports = model('auth',authSchema)
+const auth = model('auth',authSchema)
+module.exports = auth
+// module.exports = model('auth',authSchema)

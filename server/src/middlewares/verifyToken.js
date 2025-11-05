@@ -10,7 +10,7 @@ const verifyToken = async(req,res,next)=>{
         next()
     } catch (error) {
         console.log(error)
-        return res.status(307).redirect('/auth/login').send('Invalid')
+        return res.status(307).redirect('http://localhost:5173/auth/login').send('Invalid')
     }
 }
 module.exports = verifyToken
