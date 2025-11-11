@@ -34,24 +34,34 @@ const createCategoryController =async (req,res)=>{
 }
 
 // update category controller
-const updateController =async(req,res)=>{
-    try {
-        const {categoryId,updateStatus} = req.body
-        if(!categoryId) return res.status(404).json({message:'Category id is required!'})
-        if(updateStatus != 'approved' && updateStatus != 'calcel') return res.status(403).json({message:'Please select approved and cancel'})
-        await category.findByIdAndUpdate(categoryId,{adminApproval:updateStatus})
-        return res.status(200).json({message:'Category updated successfully'})
-        } catch (error) {
-        return res.status(500).json({message:'Internal server error!'})
-    }
-}
+const updateController = async (req, res) => {
+  try {
+    const { categoryId, updateStatus } = req.body;
+    if (!categoryId) return res.status(404).json({ message: "Category id is required!" });
+    if (updateStatus != "approved" && updateStatus != "calcel")
+      return res.status(403).json({ message: "Please select approved and cancel" });
+    await category.findByIdAndUpdate(categoryId, { adminApproval: updateStatus });
+    return res.status(200).json({ message: "Category updated successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error!" });
+  }
+};
 
 // delete category controller
-
+const deleteCategoryController = async(req,res)=>{
+    try {
+        const {categoryId}=req.body
+        await category.findByIdAndDelete({categoryId})
+        return res.status(200).json({message:'Category deleted successfully'})
+    } catch (error) {
+        return res.status(500).json({message:'Internal server error',error})
+    }
+}
 // get category controller
 
 
 module.exports={
     createCategoryController,
-    updateController
+    updateController,
+    deleteCategoryController
 }
