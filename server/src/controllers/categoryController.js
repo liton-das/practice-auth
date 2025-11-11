@@ -29,6 +29,7 @@ const createCategoryController =async (req,res)=>{
         fs.unlinkSync(req.file.path)
         return res.status(200).json({message:'Creategory created successfully!'})
     } catch (error) {
+        console.log(error)
         res.status(500).json({message:'Internal server error',error})
     }
 }
@@ -38,12 +39,12 @@ const updateController = async (req, res) => {
   try {
     const { categoryId, updateStatus } = req.body;
     if (!categoryId) return res.status(404).json({ message: "Category id is required!" });
-    if (updateStatus != "approved" && updateStatus != "calcel")
+    if (updateStatus != "approved" && updateStatus != "cancel")
       return res.status(403).json({ message: "Please select approved and cancel" });
     await category.findByIdAndUpdate(categoryId, { adminApproval: updateStatus });
     return res.status(200).json({ message: "Category updated successfully" });
   } catch (error) {
-    return res.status(500).json({ message: "Internal server error!" });
+    return res.status(500).json({ message: "Internal server error!",error });
   }
 };
 
@@ -57,11 +58,29 @@ const deleteCategoryController = async(req,res)=>{
         return res.status(500).json({message:'Internal server error',error})
     }
 }
-// get category controller
-
+// get category controller for admin
+const getAllCategoryController =async(req,res)=>{
+    try {
+        const categories = await category.find()
+        return res.status(200).json(categories)
+    } catch (error) {
+        return res.status(500).json({message:'Internal server error!'})
+    }
+}
+// get Active Category controller for public
+const getActiveCategoriesController =async(req,res)=>{
+    try {
+        const approvedCategories = await category.find({adminApproval:'approved'})
+        return res.status(200).json(approvedCategories)
+    } catch (error) {
+        return res.status(500).json({message:'Internal server error',error})
+    }
+}
 
 module.exports={
     createCategoryController,
     updateController,
-    deleteCategoryController
+    deleteCategoryController,
+    getAllCategoryController,
+    getActiveCategoriesController
 }
