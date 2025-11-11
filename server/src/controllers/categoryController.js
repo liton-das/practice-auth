@@ -39,7 +39,9 @@ const updateController =async(req,res)=>{
         const {categoryId,updateStatus} = req.body
         if(!categoryId) return res.status(404).json({message:'Category id is required!'})
         if(updateStatus != 'approved' && updateStatus != 'calcel') return res.status(403).json({message:'Please select approved and cancel'})
-    } catch (error) {
+        await category.findByIdAndUpdate(categoryId,{adminApproval:updateStatus})
+        return res.status(200).json({message:'Category updated successfully'})
+        } catch (error) {
         return res.status(500).json({message:'Internal server error!'})
     }
 }
