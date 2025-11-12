@@ -36,14 +36,17 @@ const createCategoryController =async (req,res)=>{
 
 // update category controller
 const updateController = async (req, res) => {
+   
   try {
-    const { categoryId, updateStatus } = req.body;
+    const { categoryId, updateStatus } = req.body
+    console.log(categoryId,updateStatus)
     if (!categoryId) return res.status(404).json({ message: "Category id is required!" });
     if (updateStatus != "approved" && updateStatus != "cancel")
       return res.status(403).json({ message: "Please select approved and cancel" });
-    await category.findByIdAndUpdate(categoryId, { adminApproval: updateStatus });
+    await category.findByIdAndUpdate(categoryId, { adminApproval: 'cancel' });
     return res.status(200).json({ message: "Category updated successfully" });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ message: "Internal server error!",error });
   }
 };
@@ -53,6 +56,8 @@ const deleteCategoryController = async(req,res)=>{
     try {
         const {categoryId}=req.body
         await category.findByIdAndDelete({categoryId})
+        
+        
         return res.status(200).json({message:'Category deleted successfully'})
     } catch (error) {
         return res.status(500).json({message:'Internal server error',error})

@@ -15,7 +15,7 @@ const categorySchema = new Schema({
     },
     adminApproval:{
         type:String,
-        enum:['approved','pendding','cancel'],
+        enum:['pendding','approved','cancel'],
         default:'pendding'
     }
 },{timestamps:true})
