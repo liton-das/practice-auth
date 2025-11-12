@@ -1,3 +1,4 @@
+const { isValidObjectId } = require("mongoose");
 const category = require("../model/category")
 const cloudinary = require('cloudinary').v2
 const fs = require('fs')
@@ -36,14 +37,18 @@ const createCategoryController =async (req,res)=>{
 
 // update category controller
 const updateController = async (req, res) => {
-   
   try {
     const { categoryId, updateStatus } = req.body
-    console.log(categoryId,updateStatus)
     if (!categoryId) return res.status(404).json({ message: "Category id is required!" });
     if (updateStatus != "approved" && updateStatus != "cancel")
       return res.status(403).json({ message: "Please select approved and cancel" });
-    await category.findByIdAndUpdate(categoryId, { adminApproval: 'cancel' });
+        await category.findByIdAndUpdate(categoryId, { adminApproval: updateStatus })
+    // await updated.save()
+    // await category.findByIdAndUpdate(categoryId,{
+    //     $set:{
+    //         adminApproval:updateStatus
+    //     }
+    // },{new:true})
     return res.status(200).json({ message: "Category updated successfully" });
   } catch (error) {
     console.log(error)
@@ -53,15 +58,15 @@ const updateController = async (req, res) => {
 
 // delete category controller
 const deleteCategoryController = async(req,res)=>{
-    try {
-        const {categoryId}=req.body
-        await category.findByIdAndDelete({categoryId})
-        
-        
+
+        const {id}=req.body
+        const isCategoryId = await category.findOne({_id:id})
+        // http://res.cloudinary.com/dwjtuk5wr/image/upload/v1762922348/1762922345609.png
+       const filePath = isCategoryId.categoryImage.split('/')[7].split('.')[0]
+       if(!filePath) return res.status(400).json({message:'File path is not found!'})
+        await cloudinary.uploader.destroy(filePath)
+        await isCategoryId.deleteOne()
         return res.status(200).json({message:'Category deleted successfully'})
-    } catch (error) {
-        return res.status(500).json({message:'Internal server error',error})
-    }
 }
 // get category controller for admin
 const getAllCategoryController =async(req,res)=>{
