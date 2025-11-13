@@ -1,12 +1,16 @@
 import React from 'react'
 import { Outlet } from 'react-router'
 import Navbar from '../components/Navbar'
+import Bradcumb from '../components/Bradcumb'
 const LayoutesOne = () => {
   return (
     <>
     <div className='flex '>
-      <Navbar/>
-      <Outlet/>
+        <Navbar/>
+      <div className='w-full flex flex-col'>
+        <Bradcumb/>
+        <Outlet/>
+      </div>
     </div>
     </>
   )
