@@ -193,6 +193,17 @@ const getAdmin_staff_Lists=async(req,res)=>{
     return res.status(500).json({message:'Internal server error',error})
   }
 }
+// Get admin & staff lists controller function 
+const getCustomerLists=async(req,res)=>{
+  try {
+    const customers=await auth.findOne({userRole:'user'})
+    if(customers) return res.status(404).json({message:'Customer not found!'})
+    return res.send(customers)
+  } catch (error) {
+    console.log(error)
+    return res.status(200).json({message:'Internal server error!',error})
+  }
+}
 module.exports = {
     registerController,
     verifyOtpController,
@@ -200,5 +211,6 @@ module.exports = {
     loginController,
     updateProfileController,
     make_adminController,
-    getAdmin_staff_Lists
+    getAdmin_staff_Lists,
+    getCustomerLists
 }
