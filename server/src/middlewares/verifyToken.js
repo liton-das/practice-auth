@@ -10,7 +10,7 @@ const verifyToken = async(req,res,next)=>{
         next()
     } catch (error) {
         console.log(error)
-         res.status(307).redirect('http://localhost:5173/auth/login').send('Token already expired!')
+         res.status(307).send('Token already expired!')
     }
 }
 module.exports = verifyToken
