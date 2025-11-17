@@ -3,12 +3,13 @@ const { createCategoryController, updateController, deleteCategoryController, ge
 const categoryApi= require('express').Router()
 const multer  = require('multer')
 const verifyToken = require('../../middlewares/verifyToken')
+const checkRole = require('../../middlewares/checkRole')
 const upload = multer({ dest: 'uploads/' })
 categoryApi.post('/addCategory',verifyToken,upload.single('categoryImage'),createCategoryController)
 categoryApi.patch('/updateCategory',verifyToken,upload.single('categoryImage'),updateController)
-categoryApi.post('/deleteCategory',verifyToken,deleteCategoryController)
-categoryApi.get('/allCategories',verifyToken,getAllCategoryController)
+categoryApi.post('/deleteCategory',verifyToken,checkRole(['admin']),deleteCategoryController)
+categoryApi.get('/allCategories',verifyToken,checkRole(['admin','staff']),getAllCategoryController)
 categoryApi.get('/activeCategories',getActiveCategoriesController)
 
 
-module.exports = categoryApi
+module.exports = categoryApi 

@@ -1,4 +1,5 @@
-const { registerController, verifyOtpController, resendOtpController, loginController, updateProfileController } = require('../../controllers/authcontroller')
+const { registerController, verifyOtpController, resendOtpController, loginController, updateProfileController, make_adminController, getAdmin_staff_Lists } = require('../../controllers/authcontroller')
+const checkRole = require('../../middlewares/checkRole')
 const verifyToken = require('../../middlewares/verifyToken')
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' })
@@ -8,6 +9,7 @@ authApi.post('/verifyOtp',verifyOtpController)
 authApi.post('/login',loginController)
 authApi.get('/resendOtp',resendOtpController)
 authApi.post('/updateProfile',verifyToken,upload.single('avatar'),updateProfileController)
-
+authApi.patch('/makeAdmin',verifyToken,checkRole(['admin']),make_adminController)
+authApi.get('/getAllUsers',verifyToken,checkRole(['admin']),getAdmin_staff_Lists)
 
 module.exports = authApi

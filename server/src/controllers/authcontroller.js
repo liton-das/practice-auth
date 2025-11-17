@@ -171,10 +171,34 @@ const updateProfileController = async(req,res)=>{
     return res.status(500).json({message:'Internal server error!'})
   }
 }
+// make admin controller function 
+const make_adminController =async(req,res)=>{
+  try {
+    const {staffId} = req.body
+  if(!staffId) return res.status(400).json({message:'Please provide a staff id!'})
+  await auth.findByIdAndUpdate(staffId,{userRole:'admin'})
+  return res.status(200).json({message:'Designation changed successfully'})
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({message:'Internal server error',error})
+  }
+}
+// Get admin & staff lists controller function 
+const getAdmin_staff_Lists=async(req,res)=>{
+  try {
+    const users = await auth.find()
+    return res.status(200).json(users)
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({message:'Internal server error',error})
+  }
+}
 module.exports = {
     registerController,
     verifyOtpController,
     resendOtpController,
     loginController,
-    updateProfileController
+    updateProfileController,
+    make_adminController,
+    getAdmin_staff_Lists
 }

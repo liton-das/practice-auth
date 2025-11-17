@@ -7,6 +7,7 @@ const verifyToken = async(req,res,next)=>{
         if(!isVerifyToken){
             return res.status(404).json({message:'Invalid token!'})
         }
+        req.user = token
         next()
     } catch (error) {
         console.log(error)
