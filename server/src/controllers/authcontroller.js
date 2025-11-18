@@ -224,6 +224,24 @@ const deleteUserController=async(req,res)=>{
     return res.status(500).json({message:'Internal server error',error})
   }
 }
+// forgot password controller function
+const forgotPasswordController =async(req,res)=>{
+  try {
+    const {email,password}=req.body
+    if(!email) return res.status(404).json({message:'Email is required!'})
+    const existingUser = await auth.findOne({email})
+    if(!existingUser) return res.status(400).json({message:'Invalid your email!'})
+    if(!passwordRegex.test(password)) return res.status(400).json({message:'please provide a strong password'})
+    if(password.length < 6 && password.length > 15) return res.status(401).json({message:'Password minumum 6 to maximum 15 characters allowed.'})
+    const hashed = await bcrypt.hash(password,11)
+    existingUser.password = hashed
+    await existingUser.save()
+    return res.status(200).json({message:'Change password successfully'})
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({message:`Internal server error ${error}`})
+  }
+} 
 module.exports = {
     registerController,
     verifyOtpController,
@@ -233,5 +251,6 @@ module.exports = {
     make_adminController,
     getAdmin_staff_Lists,
     getCustomerLists,
-    deleteUserController
+    deleteUserController,
+    forgotPasswordController
 }
