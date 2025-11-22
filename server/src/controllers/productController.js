@@ -6,6 +6,8 @@ const addProductController = async(req,res)=>{
         // console.log(title,price,varient,categoryId,description,review,discountPrice,tags,stock)
         const sku = skuGenerator(title)
         const slug = slugGenerator(title)
+        // upload images
+        console.log(req.files)
     } catch (error) {
         return res.status(500).json({message:'Internal server error',error})
     }
