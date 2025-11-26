@@ -41,7 +41,19 @@ const addProductController = async(req,res)=>{
         return res.status(500).json({message:'Internal server error',error})
     }
 }
-
+// update admin approval controller 
+const updateAdminApprovalStatus = async(req,res)=>{
+    try {
+        const {productId,status}=req.body
+        if(status != 'approved' && status != 'cancle') return res.status(400).json({message:'Please select between approved or cancle!'})
+        await products.findByIdAndUpdate(productId,{adminApproval:status})
+        return res.status(200).json({message:`${status} updated successfully`})
+        } catch (error) {
+        console.log(error)
+        return res.status(500).json({message:'Internal server error',error})
+    }
+}
 module.exports={
-    addProductController
+    addProductController,
+    updateAdminApprovalStatus
 }
