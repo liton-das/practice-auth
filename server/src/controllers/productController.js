@@ -41,6 +41,34 @@ const addProductController = async(req,res)=>{
         return res.status(500).json({message:'Internal server error',error})
     }
 }
+// update product controller 
+const updateProduct = async(req,res)=>{
+    try {
+        const {
+            productId,
+            title,
+            price,
+            varient,
+            categoryId,
+            description,
+            review,
+            discountPrice,
+            tags,
+            stock
+        } = req.body
+        const existProduct = await products.findOne({_id:productId})
+        if(!existProduct) return res.status(400).json({message:'Exist product not found!'})
+        if(title){
+            existProduct.title=title
+        }
+
+       await existProduct.save()
+    return res.status(200).json({message:'product updated successfully',existProduct})
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message:'Internal server error'})
+    }
+}
 // update admin approval controller 
 const updateAdminApprovalStatus = async(req,res)=>{
     try {
@@ -53,7 +81,21 @@ const updateAdminApprovalStatus = async(req,res)=>{
         return res.status(500).json({message:'Internal server error',error})
     }
 }
+
+// delete product controller 
+const deleteProductController = async(req,res)=>{
+    try {
+        const {productId}=req.body
+        await products.findByIdAndDelete(productId)
+        return res.status(200).json({message:'Product deleted successfully'})
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message:'Internal server error!'})
+    }
+}
 module.exports={
     addProductController,
-    updateAdminApprovalStatus
+    updateAdminApprovalStatus,
+    deleteProductController,
+    updateProduct
 }
