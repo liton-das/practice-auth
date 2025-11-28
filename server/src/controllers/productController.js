@@ -108,9 +108,29 @@ const deleteProductController = async(req,res)=>{
         return res.status(500).json({message:'Internal server error!'})
     }
 }
+// dashboard controller 
+/**
+ * filter data
+ * pagination
+ * 
+ * 
+ */
+const dashboardController=async(req,res)=>{
+    try {
+        const {filterProduct} = req.body
+        const filtered ={}
+        if(filtered != 'all'){
+            //
+        }
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message:'Internal server error!'})
+    }
+}
 module.exports={
     addProductController,
     updateAdminApprovalStatus,
     deleteProductController,
-    updateProduct
+    updateProduct,
+    dashboardController
 }
