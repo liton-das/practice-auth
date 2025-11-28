@@ -19,4 +19,5 @@ const uploadCloudinary=async(filePath)=>{
     }
     return upload
 }
+
 module.exports = uploadCloudinary

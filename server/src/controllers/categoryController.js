@@ -23,7 +23,7 @@ const createCategoryController =async (req,res)=>{
         )
        const categorys = new category({
             categoryName,
-            categoryImage:uploadResult.url,
+            categoryImage:uploadResult.secure_url,
             createdBy
         })
         await categorys.save()

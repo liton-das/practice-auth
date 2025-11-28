@@ -1,11 +1,10 @@
 const uploadCloudinary = require("../config/cloudinary")
 const { skuGenerator, slugGenerator } = require("../helpers/skuGenerator")
 const products = require("../model/products")
-
+const cloudinary = require('cloudinary').v2
 const addProductController = async(req,res)=>{
     try {
         const {title,price,varient,categoryId,description,review,discountPrice,tags,stock}=req.body
-        // console.log(title,price,varient,categoryId,description,review,discountPrice,tags,stock)
         const sku = skuGenerator(title)
         const slug = slugGenerator(title)
         // upload thumbnail image
@@ -49,7 +48,6 @@ const updateProduct = async(req,res)=>{
             title,
             price,
             varient,
-            categoryId,
             description,
             review,
             discountPrice,
@@ -58,10 +56,27 @@ const updateProduct = async(req,res)=>{
         } = req.body
         const existProduct = await products.findOne({_id:productId})
         if(!existProduct) return res.status(400).json({message:'Exist product not found!'})
-        if(title){
-            existProduct.title=title
+        // update thumbnail image file---------------------
+        const thumbPath = req.files.thumbnail[0].path
+        const imgId = existProduct.thumbnail.split('/')[7].split('.')[0]
+        let thumbnail;
+        if(imgId){
+            await cloudinary.uploader.destroy(imgId)
+        }else{
+            thumbnail = await uploadCloudinary(thumbPath)
         }
-
+        
+        // return console.log(thumbnail)
+        if(title)existProduct.title=title
+        if(thumbnail)existProduct.thumbnail=thumbnail
+        if(price)existProduct.price=price
+        if(varient) existProduct.varient=varient
+        if(description)existProduct.description=description
+        if(review)existProduct.review=review
+        if(discountPrice)existProduct.discountPrice=discountPrice
+        if(tags)existProduct.tags=tags
+        if(stock)existProduct.stock=stock
+        
        await existProduct.save()
     return res.status(200).json({message:'product updated successfully',existProduct})
     } catch (error) {
