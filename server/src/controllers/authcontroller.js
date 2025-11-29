@@ -7,7 +7,7 @@ const otpGenerator = require("../helpers/otpGenerator");
 const otpExpireTimeGenerator = require("../helpers/otpExpireGenerator");
 const cloudinary = require('cloudinary').v2
 const fs = require('fs')
-const jwt = require ('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 const registerController = async (req, res) => {
   try {
     // get user information from client
@@ -102,10 +102,14 @@ const loginController =async(req,res)=>{
       if(!user) return res.status(401).json({message:'user not found'})
       const isMatch = await bcrypt.compare(password,user.password)
       if(!isMatch) return res.status(404).json({message:'Invalid creadintial!'})
-      const token = jwt.sign({
+      const token = jwt.sign(
+    {
         email:user.email,
         role:user.userRole
-    },process.env.SECRET_KEY,{expiresIn:'1h'})
+    },
+    process.env.SECRET_KEY,
+    {expiresIn:'7d'}
+  )
     const userInfo={
       userName:user.userName,
       userEmail:user.email

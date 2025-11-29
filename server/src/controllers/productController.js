@@ -117,11 +117,11 @@ const deleteProductController = async(req,res)=>{
  */
 const dashboardController=async(req,res)=>{
     try {
-        const {filterProduct} = req.body
-        const filtered ={}
-        if(filtered != 'all'){
-            //
-        }
+        const {filterProduct}=req.body
+        const filterBy ={}
+        if(filterBy != 'all') filterBy.categoryId = filterProduct
+       const product = await products.find(filterBy)
+       return console.log(product)
     } catch (error) {
         console.log(error)
         return res.status(500).json({message:'Internal server error!'})

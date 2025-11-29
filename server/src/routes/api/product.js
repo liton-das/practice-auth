@@ -8,7 +8,7 @@ productApi.post('/add-product',upload.fields([{name:'thumbnail',maxCount:1},{nam
 productApi.patch('/update-status',verifyToken,checkRole(['admin']),updateAdminApprovalStatus)
 productApi.post('/update-product',upload.fields([{name:'thumbnail',maxCount:1},{name:'subImages',maxCount:5}]),updateProduct)
 productApi.delete('/delete-product',verifyToken,checkRole(['admin']),deleteProductController)
-productApi.delete('/dashboard-product',dashboardController)
+productApi.get('/dashboard-product',dashboardController)
 
 
 
