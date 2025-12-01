@@ -118,16 +118,18 @@ const deleteProductController = async(req,res)=>{
 const dashboardController=async(req,res)=>{
     try {
         const {filterProduct}=req.body
-        // filter by category
-        const filterBy ={}
-        // limit for per page 
-        const {limit,page}=req.query
-        const limitPerPage = limit || 6
-        const skip_page = limitPerPage *(page-1)
-        if(filterProduct != 'all') filterBy.categoryId = filterProduct
-        const product = await products.find(filterBy).limit(limitPerPage).skip(skip_page)
+        const filterBy ={}// filter by category
+        const sortBy ={}// short discount price min to max or max to min
+        const limitPerPage = limit || 6// set page limit
+        const skip_page = limitPerPage *(page-1) // skip page 
+        if(filterProduct != 'all') filterBy.categoryId = filterProduct// filter product by category
+        const {limit,page,minPrice,maxPrice}=req.query// get data from query
+        if(minPrice && maxPrice) filterBy.discountPrice = {$gte:minPrice,$lte:maxPrice}// check condition by minPrice and maxPrice
+        if(sortBy == 'lowToHign') sortBy.discountPrice = 1// sort by low to high 
+        if(sortBy == 'highToLow') sortBy.discountPrice = -1// sort by high to low
+        const product = await products.find(filterBy).limit(limitPerPage).skip(skip_page).sort(sortBy).select('discountPrice')
         console.log(product)
-        return res.status(200).send(product.length)
+        return res.status(200).send(product)
     } catch (error) {
         console.log(error)
         return res.status(500).json({message:'Internal server error!'})
