@@ -36,7 +36,7 @@ const Login = () => {
           setError(isError)
         }else{
           // send form data to the server 
-          postData('http://localhost:8080/auth/login',inputField)
+          postData('http://localhost:4000/auth/login',inputField)
           navigator('/')
           setError('')
           setInputField(INITIAL_DATA)

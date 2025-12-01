@@ -39,7 +39,7 @@ const RegistrationForm = () => {
       if(isError){
         setError(isError)
       }
-      postData('http://localhost:8080/auth/register',inputField)
+      postData('http://localhost:4000/auth/register',inputField)
       setError('')
       setInputField({...INITIAL_DATA})
     }
