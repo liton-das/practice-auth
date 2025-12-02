@@ -1,5 +1,4 @@
 const checkRole=(roles)=>{
-    console.log('user',roles)
     return (req,res,next)=>{
         if(roles[0] == req.user.role || roles[1] == req.user.role){
            return next()
