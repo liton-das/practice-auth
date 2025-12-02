@@ -17,7 +17,6 @@ const uploadCloudinary=async(filePath)=>{
     } catch (error) {
         console.log(error)
     }
-    return upload
 }
 
 module.exports = uploadCloudinary

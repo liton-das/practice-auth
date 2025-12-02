@@ -118,18 +118,23 @@ const deleteProductController = async(req,res)=>{
 const dashboardController=async(req,res)=>{
     try {
         const {filterProduct}=req.body
-        const filterBy ={}// filter by category
-        const sortBy ={}// short discount price min to max or max to min
-        const limitPerPage = limit || 6// set page limit
-        const skip_page = limitPerPage *(page-1) // skip page 
-        if(filterProduct != 'all') filterBy.categoryId = filterProduct// filter product by category
-        const {limit,page,minPrice,maxPrice}=req.query// get data from query
-        if(minPrice && maxPrice) filterBy.discountPrice = {$gte:minPrice,$lte:maxPrice}// check condition by minPrice and maxPrice
-        if(sortBy == 'lowToHign') sortBy.discountPrice = 1// sort by low to high 
-        if(sortBy == 'highToLow') sortBy.discountPrice = -1// sort by high to low
-        const product = await products.find(filterBy).limit(limitPerPage).skip(skip_page).sort(sortBy).select('discountPrice')
-        console.log(product)
-        return res.status(200).send(product)
+        const filterBy = {}
+        const sortBy ={}
+        const {limit,page,minPrice,maxPrice,sortByPrice}=req.query // get page limit and page, page-skip by query
+        const limitpage = limit || 6 // set the page limit dynamic and by default 6
+        const pageSkip = limitpage * (page - 1) // skip per page for pagination 
+        // return console.log({minPrice,maxPrice})
+        if(minPrice && maxPrice) filterBy.discountPrice = {$gte:minPrice, $lte:maxPrice} // filter by Product discount Price by max and min price 
+        if(filterProduct != 'all') filterBy.categoryId=filterProduct // filter by category Id 
+        if(sortByPrice == 'lowToHigh') {sortBy.discountPrice = 1}
+        if(sortByPrice == 'highToLow') {sortBy.discountPrice = -1}
+        console.log(filterBy)
+        const product=await products.find(filterBy).limit(limitpage).skip(pageSkip).sort(sortBy).select('discountPrice')
+
+        // console.log(product)
+
+        console.log(filterBy)
+        return res.status(200).send({product,limit:limitpage,skip:pageSkip,totalProducts:product.length})
     } catch (error) {
         console.log(error)
         return res.status(500).json({message:'Internal server error!'})
