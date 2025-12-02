@@ -150,9 +150,7 @@ const publicDashboardController =async(req,res)=>{
         if(sortByPrice == 'highToLow') {sortBy.discountPrice = -1}
         console.log(filterBy)
         const product=await products.find(filterBy).limit(limitpage).skip(pageSkip).sort(sortBy)
-
         // console.log(product)
-
         console.log(filterBy)
         return res.status(200).send({product,limit:limitpage,skip:pageSkip,totalProducts:product.length})
     } catch (error) {
