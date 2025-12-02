@@ -109,12 +109,6 @@ const deleteProductController = async(req,res)=>{
     }
 }
 // dashboard controller 
-/**
- * filter data
- * pagination
- * 
- * 
- */
 const dashboardController=async(req,res)=>{
     try {
         const {filterProduct}=req.body
@@ -129,7 +123,7 @@ const dashboardController=async(req,res)=>{
         if(sortByPrice == 'lowToHigh') {sortBy.discountPrice = 1}
         if(sortByPrice == 'highToLow') {sortBy.discountPrice = -1}
         console.log(filterBy)
-        const product=await products.find(filterBy).limit(limitpage).skip(pageSkip).sort(sortBy).select('discountPrice')
+        const product=await products.find(filterBy).limit(limitpage).skip(pageSkip).sort(sortBy)
 
         // console.log(product)
 
@@ -140,10 +134,36 @@ const dashboardController=async(req,res)=>{
         return res.status(500).json({message:'Internal server error!'})
     }
 }
+// public dashboard Controller 
+const publicDashboardController =async(req,res)=>{
+    try {
+        const {filterProduct}=req.body
+        const filterBy = {adminApproval:'approved'}
+        const sortBy ={}
+        const {limit,page,minPrice,maxPrice,sortByPrice}=req.query // get page limit and page, page-skip by query
+        const limitpage = limit || 6 // set the page limit dynamic and by default 6
+        const pageSkip = limitpage * (page - 1) // skip per page for pagination 
+        // return console.log({minPrice,maxPrice})
+        if(minPrice && maxPrice) filterBy.discountPrice = {$gte:minPrice, $lte:maxPrice} // filter by Product discount Price by max and min price 
+        if(filterProduct != 'all') filterBy.categoryId=filterProduct // filter by category Id 
+        if(sortByPrice == 'lowToHigh') {sortBy.discountPrice = 1}
+        if(sortByPrice == 'highToLow') {sortBy.discountPrice = -1}
+        console.log(filterBy)
+        const product=await products.find(filterBy).limit(limitpage).skip(pageSkip).sort(sortBy)
+
+        // console.log(product)
+
+        console.log(filterBy)
+        return res.status(200).send({product,limit:limitpage,skip:pageSkip,totalProducts:product.length})
+    } catch (error) {
+        return res.status(500).json({message:'Internal server error',error})
+    }
+}
 module.exports={
     addProductController,
     updateAdminApprovalStatus,
     deleteProductController,
     updateProduct,
-    dashboardController
+    dashboardController,
+    publicDashboardController
 }
