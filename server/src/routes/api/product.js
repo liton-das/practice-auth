@@ -12,5 +12,4 @@ productApi.get('/dashboard-product',verifyToken,checkRole(['admin','staff']),das
 productApi.get('/public-dashboard-product',publicDashboardController)
 
 
-
 module.exports = productApi

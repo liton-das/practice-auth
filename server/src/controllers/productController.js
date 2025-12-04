@@ -157,6 +157,7 @@ const publicDashboardController =async(req,res)=>{
         return res.status(500).json({message:'Internal server error',error})
     }
 }
+
 module.exports={
     addProductController,
     updateAdminApprovalStatus,
