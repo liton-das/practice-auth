@@ -2,17 +2,16 @@ const { Schema, model } = require("mongoose");
 
 const cartSchema=new Schema({
     creatorId:{
-        type:String,
-        required:true
+        type:String
     },
     productId:{
         type:Schema.Types.ObjectId,
         ref:'Product',
         required:true
     },
-    variant:[
+    varient:[
         {
-            variant:{
+            varient:{
                 type:String,
                 required:true
             },
