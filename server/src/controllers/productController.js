@@ -101,7 +101,7 @@ const updateAdminApprovalStatus = async(req,res)=>{
 const deleteProductController = async(req,res)=>{
     try {
         const {productId}=req.body
-        await products.findByIdAndDelete(productId)
+        await products.findByIdAndDelete(productId) // find product and delete 
         return res.status(200).json({message:'Product deleted successfully'})
     } catch (error) {
         console.log(error)
@@ -111,24 +111,20 @@ const deleteProductController = async(req,res)=>{
 // dashboard controller 
 const dashboardController=async(req,res)=>{
     try {
-        const {filterProduct}=req.body
-        const filterBy = {}
-        const sortBy ={}
-        const {limit,page,minPrice,maxPrice,sortByPrice}=req.query // get page limit and page, page-skip by query
-        const limitpage = limit || 6 // set the page limit dynamic and by default 6
-        const pageSkip = limitpage * (page - 1) // skip per page for pagination 
-        // return console.log({minPrice,maxPrice})
-        if(minPrice && maxPrice) filterBy.discountPrice = {$gte:minPrice, $lte:maxPrice} // filter by Product discount Price by max and min price 
-        if(filterProduct != 'all') filterBy.categoryId=filterProduct // filter by category Id 
-        if(sortByPrice == 'lowToHigh') {sortBy.discountPrice = 1}
-        if(sortByPrice == 'highToLow') {sortBy.discountPrice = -1}
-        console.log(filterBy)
-        const product=await products.find(filterBy).limit(limitpage).skip(pageSkip).sort(sortBy)
-
-        // console.log(product)
-
-        console.log(filterBy)
-        return res.status(200).send({product,limit:limitpage,skip:pageSkip,totalProducts:product.length})
+        const {limit , page,maxPrice,minPrice,sortBy}=req.query // get data from query
+        const {filterProduct}=req.body // get data from req body
+        const sortByPrice = {} // short by discount price 
+        const filterBy={} // set filteration 
+        const pageLimit = limit || 6 // set page limit 
+        const skipPerPage = pageLimit * (page - 1) // set skip page 
+        if(filterProduct != 'all') filterBy.categoryId = filterProduct // filtered product by category
+        if(minPrice && maxPrice) filterBy.discountPrice ={$gte:minPrice,$lte:maxPrice} // filter product by maxPrice and minPrice 
+        
+       
+        if(sortBy == 'lowToHigh') sortByPrice.discountPrice = 1 
+        if(sortBy == 'highToLow') sortByPrice.discountPrice = - 1
+        const product = await products.find(filterBy).skip(skipPerPage).sort(sortByPrice).select('discountPrice') // filteration from db
+        return res.status(200).json({product,limit:pageLimit,skipPerPage,totalProducts:product.length})
     } catch (error) {
         console.log(error)
         return res.status(500).json({message:'Internal server error!'})
