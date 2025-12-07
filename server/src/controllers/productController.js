@@ -119,8 +119,6 @@ const dashboardController=async(req,res)=>{
         const skipPerPage = pageLimit * (page - 1) // set skip page 
         if(filterProduct != 'all') filterBy.categoryId = filterProduct // filtered product by category
         if(minPrice && maxPrice) filterBy.discountPrice ={$gte:minPrice,$lte:maxPrice} // filter product by maxPrice and minPrice 
-        
-       
         if(sortBy == 'lowToHigh') sortByPrice.discountPrice = 1 
         if(sortBy == 'highToLow') sortByPrice.discountPrice = - 1
         const product = await products.find(filterBy).skip(skipPerPage).sort(sortByPrice).select('discountPrice') // filteration from db
@@ -146,19 +144,31 @@ const publicDashboardController =async(req,res)=>{
         if(sortByPrice == 'highToLow') {sortBy.discountPrice = -1}
         console.log(filterBy)
         const product=await products.find(filterBy).limit(limitpage).skip(pageSkip).sort(sortBy)
-        // console.log(product)
-        console.log(filterBy)
         return res.status(200).send({product,limit:limitpage,skip:pageSkip,totalProducts:product.length})
     } catch (error) {
         return res.status(500).json({message:'Internal server error',error})
     }
 }
-
+// review controller 
+const reviewController=async(req,res)=>{
+    try {
+        const {productId,reviewComment}=req.body // get user information from req.body
+        const existProduct= await products.findById(productId) // find product from db 
+        if(!existProduct) return res.status(404).json({message:'Product not found!'}) // check validation
+        existProduct.review.push(reviewComment) // new review keep in product review
+        existProduct.save() // save to the database
+        return res.status(201).json({message:'Review done'}) // send response
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message:'Internal server error!',error})
+    }
+}
 module.exports={
     addProductController,
     updateAdminApprovalStatus,
     deleteProductController,
     updateProduct,
     dashboardController,
-    publicDashboardController
+    publicDashboardController,
+    reviewController
 }
