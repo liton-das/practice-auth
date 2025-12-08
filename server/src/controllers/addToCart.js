@@ -31,7 +31,26 @@ const addToCartProdut=async(req,res)=>{
         return res.status(500).json({message:'Internal server error!',error})
     }
 }
-
+// delete cart controller 
+const deleteCartController =async(req,res)=>{
+    try {
+        const {creatorId,deleteId}=req.body
+        const existProduct = await cart.findOne({creatorId})
+        if(!existProduct) return res.status(404).json({message:'Cart is not found!'})
+        if(existProduct._id == deleteId){
+            await cart.findByIdAndDelete(deleteId)
+            return res.status(200).json({message:'All cart deleted'})
+        }else{
+           let deleted = await cart.updateOne({$pull:{varients:{_id:deleteId}}})
+        //    if(delete) return res.status(200)
+            console.log(deleted)
+            return res.status(200).json({message:'Cart deleted'})
+        }
+    } catch (error) {
+        return res.status(500).json({message:'Internal server error',error})
+    }
+}
 module.exports={
-    addToCartProdut
+    addToCartProdut,
+    deleteCartController
 }
