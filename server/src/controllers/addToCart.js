@@ -6,21 +6,21 @@ const addToCartProdut=async(req,res)=>{
     try {
         const {creatorId,productId,varients}=req.body
         const existProduct = await cart.findOne({productId,creatorId})
-
         const [varient]=varients
         // return console.log(varient.varient)
-        if(existProduct.varients.find((item)=>item.varient == varient.varient)){
-            if (existProduct.varients.find((item) => item.varient !== varient.varient)) {
-              existProduct.varients.push(varient);
-              existProduct.qty += 1;
-              await existProduct.save();
-              return res.status(200).json({ message: "New varient added" });
-            }
+        if(existProduct != null && existProduct != ''){
+            if(existProduct.varients.find((item)=>item.varient == varient.varient)){
            existProduct.qty += 1
            await existProduct.save()
            return res.status(200).json({message:'Product quantity updated'})
         }
-        
+        if(existProduct.varients.find((item)=>item.varient !== varient.varient)){
+            existProduct.varients.push(varient)
+            existProduct.qty += 1
+            await existProduct.save()
+            return res.status(200).json({message:'New varient added'})
+        }
+        }
         await new cart({
                 creatorId,
                 productId,
