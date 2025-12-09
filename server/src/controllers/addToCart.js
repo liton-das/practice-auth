@@ -43,9 +43,7 @@ const deleteCartController =async(req,res)=>{
             await cart.findByIdAndDelete(deleteId)
             return res.status(200).json({message:'All cart deleted'})
         }else{
-           let deleted = await cart.updateOne({$pull:{varients:{_id:deleteId}}})
-        //    if(delete) return res.status(200)
-            console.log(deleted)
+            await cart.updateOne({$pull:{cartItem:{productId:deleteId}}})
             return res.status(200).json({message:'Cart deleted'})
         }
     } catch (error) {
