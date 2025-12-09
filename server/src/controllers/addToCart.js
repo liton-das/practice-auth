@@ -54,8 +54,12 @@ const deleteCartController =async(req,res)=>{
 const getCartController=async(req,res)=>{
     try {
         const {userId}=req.body
-        const existCart=await cart.find({creatorId:userId}).populate({path:'varients.productId',select:'title thumbnail discountPrice price'})
-        return res.send(existCart)
+        const existCart=await cart.findOne({creatorId:userId}).populate({path:'cartItem.productId',select:'title thumbnail price discountPrice'})
+        
+        const sum = existCart.cartItem.reduce((cur,acc)=>{
+            return cur + (acc.productId.discountPrice * acc.qty)
+        },0)
+        return res.status(200).json({cartItem:existCart,total:sum})
     } catch (error) {
         console.log(error)
         return res.status(500).json({message:'Internal server error',error})

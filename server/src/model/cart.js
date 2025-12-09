@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, default: mongoose } = require("mongoose");
 
 const cartSchema = new Schema({
   creatorId: {
@@ -8,7 +8,7 @@ const cartSchema = new Schema({
   cartItem: [
     {
       productId: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.ObjectId,
         ref: "Product",
         required: true,
       },
