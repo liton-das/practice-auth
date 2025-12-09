@@ -5,22 +5,27 @@ const cartSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "auth",
   },
-  productId: {
-    type: Schema.Types.ObjectId,
-    ref: "Product",
-    required: true,
-  },
-  varients: [
+  cartItem: [
     {
-      varient: {
-        type: String,
+      productId: {
+        type: Schema.Types.ObjectId,
+        ref: "Product",
         required: true,
       },
+
+      qty: {
+        type: Number,
+        default: 1,
+      },
+      varients: [
+        {
+          varient: {
+            type: String,
+            required: true,
+          },
+        },
+      ],
     },
   ],
-  qty: {
-    type: Number,
-    default: 1,
-  },
 });
-module.exports = model('cart',cartSchema)
+module.exports = model("cart", cartSchema);
