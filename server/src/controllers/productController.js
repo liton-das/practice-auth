@@ -163,7 +163,17 @@ const reviewController=async(req,res)=>{
         return res.status(500).json({message:'Internal server error!',error})
     }
 }
-
+// get a single product controller 
+const getSingleProductController= async(req,res)=>{
+    try {
+        const {slug}=req.params
+        const existProduct = await products.findOne({slug})
+        res.status(200).json({data:existProduct})
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message:'Internal server error',error})
+    }
+}
 module.exports={
     addProductController,
     updateAdminApprovalStatus,
@@ -171,5 +181,6 @@ module.exports={
     updateProduct,
     dashboardController,
     publicDashboardController,
-    reviewController
+    reviewController,
+    getSingleProductController
 }
