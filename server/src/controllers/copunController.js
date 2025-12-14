@@ -27,6 +27,7 @@ const updateCopunController=async(req,res)=>{
         if(discountPrice){
             existCopun.discountPrice = discountPrice
         }
+        await existCopun.save()
         return res.status(200).json({message:'Copun updated succcessfully!'})
     } catch (error) {
         console.log(error)

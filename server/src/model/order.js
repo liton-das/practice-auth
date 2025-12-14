@@ -1,0 +1,30 @@
+const { Schema, model } = require("mongoose");
+
+const orderSchema= new Schema.ObjectId({
+    name:{
+        type:String,
+        required:true
+    },
+    email:{
+        type:String,
+        required:true
+    },
+    district:{
+        type:String,
+        required:true
+    },
+    comment:{
+        type:String,
+        default:null
+    },
+    productInfo:Array,
+    copun:{
+        type:String,
+        default:null
+    },
+    totalPrice:{
+        type:String,
+        required:true
+    }
+},{Timestamp:true})
+module.exports = model('order',orderSchema)

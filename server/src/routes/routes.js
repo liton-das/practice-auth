@@ -2,6 +2,7 @@ const addToCartApi = require('./api/addToCart')
 const authApi = require('./api/auth')
 const categoryApi = require('./api/categoryApi')
 const copunApi = require('./api/coupon')
+const orderApi = require('./api/orderApi')
 const productApi = require('./api/product')
 
 const router = require('express').Router()
@@ -13,4 +14,6 @@ router.use('/product',productApi)
 router.use('/cart',addToCartApi)
 // add copun api
 router.use('/copun',copunApi)
+// order api 
+router.use('/order',orderApi)
 module.exports = router
