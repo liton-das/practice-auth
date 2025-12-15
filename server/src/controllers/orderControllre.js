@@ -62,8 +62,20 @@ const getAllOrderByCustomer=async(req,res)=>{
         return res.status(500).json({message:'Internal server error',error})
     }
 }
+
+// delete OrderByOrderId controller 
+const deleteOrderController = async(req,res)=>{
+    try {
+        const {orderId}=req.body
+        await order.findByIdAndDelete({_id:orderId})
+        return res.status(200).json({message:'Your order deleted successfully!'})
+    } catch (error) {
+        return res.status(500).json({message:'Internal server error!'})
+    }
+}
 module.exports={
     orderController,
     getAllOrdersController,
-    getAllOrderByCustomer
+    getAllOrderByCustomer,
+    deleteOrderController
 }
