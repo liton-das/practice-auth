@@ -38,6 +38,21 @@ const orderController = async(req,res)=>{
         return res.status(500).json({message:'Internal server error',error})
     }
 }
+
+// get all orders controller
+const getAllOrgersController = async(req,res)=>{
+    try {
+        const orders = await order.find()
+        if(!orders) return res.status(404).json({message:'Orders not found!'})
+        return res.status(200).json(orders)
+    } catch (error) {
+        return res.status(500).json({message:'Internal server error',error})
+    }
+}
+
+// get all order by customer email
+
 module.exports={
-    orderController
+    orderController,
+    getAllOrgersController
 }
