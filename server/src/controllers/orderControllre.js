@@ -1,3 +1,4 @@
+const otpGenerator = require("../helpers/otpGenerator")
 const { emailRegex } = require("../helpers/regex")
 const cart = require("../model/cart")
 const copun = require("../model/copun")
@@ -22,6 +23,7 @@ const orderController = async(req,res)=>{
     if(district!='Dhaka') deliveryCharge = 120
     const subTotal= copunData?.discountPrice - (productsPrice+deliveryCharge)
     await new order({
+        orderId:otpGenerator(),
         name,
         email,
         district,
