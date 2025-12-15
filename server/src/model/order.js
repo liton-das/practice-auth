@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-const orderSchema= new Schema.ObjectId({
+const orderSchema= new Schema({
     name:{
         type:String,
         required:true
@@ -23,6 +23,10 @@ const orderSchema= new Schema.ObjectId({
         default:null
     },
     totalPrice:{
+        type:String,
+        required:true
+    },
+    total:{
         type:String,
         required:true
     }
