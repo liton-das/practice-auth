@@ -1,5 +1,7 @@
+const invoiceTemplate = require("../helpers/invoiceTemplate")
 const otpGenerator = require("../helpers/otpGenerator")
 const { emailRegex } = require("../helpers/regex")
+const sendMail = require("../helpers/sendMail")
 const cart = require("../model/cart")
 const copun = require("../model/copun")
 const order = require("../model/order")
@@ -22,7 +24,7 @@ const orderController = async(req,res)=>{
     let deliveryCharge=80
     if(district!='Dhaka') deliveryCharge = 120
     const subTotal= copunData?.discountPrice - (productsPrice+deliveryCharge)
-    await new order({
+    const invoice = await new order({
         orderId:otpGenerator(),
         name,
         email,
@@ -31,8 +33,10 @@ const orderController = async(req,res)=>{
         productInfo:existCartItems,
         total:productsPrice,
         totalPrice:subTotal,
-        copun:copunData.discountPrice
+        copun:copunData.discountPrice,
+        deliveryCharge
     }).save()
+    sendMail(email,'invoice',invoiceTemplate(invoice.orderId,name,email,existCartItems.cartItem[0].qty,productsPrice,productsPrice,subTotal,invoice.copun,deliveryCharge))
     return res.status(200).json({total:productsPrice,copunDiscount:copunData.discountPrice,deliveryCharge,subTotal})
     } catch (error) {
         return res.status(500).json({message:'Internal server error',error})
