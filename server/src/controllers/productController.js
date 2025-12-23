@@ -174,6 +174,20 @@ const getSingleProductController= async(req,res)=>{
         return res.status(500).json({message:'Internal server error',error})
     }
 }
+// search product controller
+const searchController = async(req,res)=>{
+    try {
+        const {searchData}=req.params
+        const existProduct=await products.find({$or:[
+            {title:{$regex:searchData,$options:"i"}},
+            {discountPrice:{$regex:searchData,$options:"i"}}
+        ]})
+        return res.send(existProduct)
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message:`Internal server error${error}`})
+    }
+}
 module.exports={
     addProductController,
     updateAdminApprovalStatus,
@@ -182,5 +196,6 @@ module.exports={
     dashboardController,
     publicDashboardController,
     reviewController,
-    getSingleProductController
+    getSingleProductController,
+    searchController
 }

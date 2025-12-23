@@ -1,4 +1,4 @@
-const { addProductController, updateAdminApprovalStatus, deleteProductController, updateProduct, dashboardController, publicDashboardController, reviewController, getSingleProductController } = require('../../controllers/productController')
+const { addProductController, updateAdminApprovalStatus, deleteProductController, updateProduct, dashboardController, publicDashboardController, reviewController, getSingleProductController, searchController } = require('../../controllers/productController')
 const checkRole = require('../../middlewares/checkRole')
 const upload = require('../../middlewares/multer')
 const verifyToken = require('../../middlewares/verifyToken')
@@ -12,6 +12,6 @@ productApi.get('/dashboard-product',verifyToken,checkRole(['admin','staff']),das
 productApi.get('/public-dashboard-product',publicDashboardController)
 productApi.post('/review-product',reviewController)
 productApi.get('/get-single-product/:slug',getSingleProductController)
-
+productApi.get('/search/:searchData',searchController)
 
 module.exports = productApi
