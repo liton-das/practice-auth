@@ -49,7 +49,7 @@ const Login = () => {
             getToastMsg.success(user.message)
             setLoading(false)
             setInputField(INITIAL_DATA)
-            navigate('/register')
+            navigate('/')
         } catch (err) {
           getToastMsg.error(err.response.data.message)
           setLoading(false)
