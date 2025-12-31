@@ -4,19 +4,19 @@ import { FaEnvelope, FaLock } from "react-icons/fa";
 import Button from '../../components/Button';
 import InputGroup from '../../components/InputGroup';
 import fieldError from '../../helpers/FieldError';
-import useApi from '../../hooks/useApi';
-import getToastMsg from '../../helpers/toastMsg';
 import Cookies from 'js-cookie'
+import axios from 'axios';
+import getToastMsg from '../../helpers/toastMsg';
 import { useNavigate } from 'react-router'
 const INITIAL_DATA = {
     email:'',
     password:''
 }
 const Login = () => {
-  const [inputField,setInputField]=useState({...INITIAL_DATA})
+      const [inputField,setInputField]=useState({...INITIAL_DATA})
       const [error,setError]=useState('')
-      const {postData,allData,errors,loading,token} = useApi()
-      const navigator = useNavigate()
+      const [loading,setLoading] = useState(false)
+      const navigate = useNavigate()
       // handleChange function 
       const handleChange=(e)=>{
           setInputField((prev)=>({
@@ -26,33 +26,35 @@ const Login = () => {
           setError('')
       }
       // handle submit function 
-      const handleSubmit = (e)=>{
+      const handleSubmit = async(e)=>{
+        setLoading(true)
         e.preventDefault()
-        const isError = fieldError(inputField,[
-          'email',
-          'password'
-        ])
-        if(isError){
-          setError(isError)
-        }else{
-          // send form data to the server 
-          postData('http://localhost:4000/auth/login',inputField)
-          navigator('/')
-          setError('')
-          setInputField(INITIAL_DATA)
+        let isError={}
+        if(!inputField.email){
+          isError.email = `${inputField.email} is required!`
+        }
+        if(!inputField.password){
+          isError.password = `${inputField.password} is required!`
+        }
+        const isValid = Object.keys(isError).length != 0 ? isError:null
+        if(isValid){
+          setError(isValid)
+          setLoading(false)
+          return
+        }
+        try {
+            const userData = await axios.post(`http://localhost:4000/auth/login`,inputField) 
+            const user = await userData.data
+            Cookies.set('token',user.accessToken)
+            getToastMsg.success(user.message)
+            setLoading(false)
+            setInputField(INITIAL_DATA)
+            navigate('/register')
+        } catch (err) {
+          getToastMsg.error(err.response.data.message)
+          setLoading(false)
         }
       }
-    useEffect(()=>{
-      if(errors){
-        getToastMsg.error(errors)
-      }else{setInterval
-        getToastMsg.success(allData.message)
-        
-      }
-      if(allData.accessToken){
-        Cookies.set('token', token)
-      }
-    },[allData,errors,token])
   return (
     <>
       <div className="min-h-screen flex items-center justify-center bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 p-6">

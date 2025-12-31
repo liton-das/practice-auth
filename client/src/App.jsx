@@ -18,8 +18,8 @@ const App = () => {
           <Route path='/add-category' element={<AddCategory/>}/>
       </Route>
       {/* Auth Routes */}
-      <Route path='/auth/register' element={<RegistrationForm/>}/>
-      <Route path='/auth/login' element={<Login/>}/>
+      <Route path='/register' element={<RegistrationForm/>}/>
+      <Route path='/login' element={<Login/>}/>
     </Route>
   ))
   return (
