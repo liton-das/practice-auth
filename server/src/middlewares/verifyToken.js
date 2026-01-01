@@ -11,7 +11,7 @@ const verifyToken = (req,res,next)=>{
         next()
     } catch (error) {
         console.log(error)
-         res.status(400).send('Token already expired!')
+        res.status(400).send('Token already expired!')
     }
 }
 module.exports = verifyToken

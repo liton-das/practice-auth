@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router'
 import { GoGraph } from "react-icons/go";
 import { IoIosArrowForward } from "react-icons/io";
+import Cookies from 'js-cookie'
+import { useNavigate } from 'react-router'
 import {
   AppstoreOutlined,
 } from '@ant-design/icons';
@@ -32,8 +34,18 @@ const items = [
   }
 ];
 const Navbar = () => {
-    const [mode, setMode] = useState('inline');
+  const [mode, setMode] = useState('inline');
   const [theme, setTheme] = useState('light');
+
+  const navigate = useNavigate()
+  const user = Cookies.get('token')
+  useEffect(()=>{
+    if(!user){
+      navigate('/login')
+    }
+  },[])
+
+
   const changeMode = value => {
     setMode(value ? 'vertical' : 'inline');
   };

@@ -8,6 +8,8 @@ import Cookies from 'js-cookie'
 import axios from 'axios';
 import getToastMsg from '../../helpers/toastMsg';
 import { useNavigate } from 'react-router'
+import { useDispatch } from 'react-redux';
+import { addUser } from '../../redux/featurs/UserSlice';
 const INITIAL_DATA = {
     email:'',
     password:''
@@ -17,6 +19,7 @@ const Login = () => {
       const [error,setError]=useState('')
       const [loading,setLoading] = useState(false)
       const navigate = useNavigate()
+      const dispatch = useDispatch()
       // handleChange function 
       const handleChange=(e)=>{
           setInputField((prev)=>({
@@ -46,11 +49,12 @@ const Login = () => {
             const userData = await axios.post(`http://localhost:4000/auth/login`,inputField) 
             const user = await userData.data
             Cookies.set('token',user.accessToken)
+            dispatch(addUser(user.userInfo))
             getToastMsg.success(user.message)
             setLoading(false)
             setInputField(INITIAL_DATA)
             navigate('/')
-        } catch (err) {
+        }catch (err) {
           getToastMsg.error(err.response.data.message)
           setLoading(false)
         }
