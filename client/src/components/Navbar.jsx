@@ -4,6 +4,7 @@ import { GoGraph } from "react-icons/go";
 import { IoIosArrowForward } from "react-icons/io";
 import Cookies from 'js-cookie'
 import { useNavigate } from 'react-router'
+import { jwtDecode } from "jwt-decode";
 import {
   AppstoreOutlined,
 } from '@ant-design/icons';
@@ -39,8 +40,10 @@ const Navbar = () => {
 
   const navigate = useNavigate()
   const user = Cookies.get('token')
+  const decoded = jwtDecode(user);
+  console.log(decoded.role)
   useEffect(()=>{
-    if(!user){
+    if(decoded.role === 'user'){
       navigate('/login')
     }
   },[])

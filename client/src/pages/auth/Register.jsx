@@ -5,6 +5,7 @@ import Button from "../../components/Button";
 import fieldError from "../../helpers/FieldError";
 import useApi from "../../hooks/useApi";
 import getToastMsg from "../../helpers/toastMsg";
+import { useNavigate } from "react-router";
 const INITIAL_DATA = {
     userName:'',
     email:'',
@@ -16,6 +17,7 @@ const RegistrationForm = () => {
     const [inputField,setInputField]=useState({...INITIAL_DATA})
     const [error,setError]=useState('')
     const {postData,allData,loading,errors}=useApi()
+    const navigate = useNavigate()
     console.log(errors,'errors')
     console.log(allData.message,'All Data')
     // handleChange function 
@@ -40,6 +42,7 @@ const RegistrationForm = () => {
         setError(isError)
       }
       postData('http://localhost:4000/auth/register',inputField)
+      navigate('/login')
       setError('')
       setInputField({...INITIAL_DATA})
     }
@@ -58,8 +61,8 @@ const RegistrationForm = () => {
         </h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           <InputGroup error={error.userName} autoComplete={'userName'} icon={<FaUser className="text-indigo-600" />} name={'userName'} onChange={handleChange} type={'text'} value={inputField.userName} placeholder={'Enter your username'}  text={'User Name'}/>
-          <InputGroup error={error.email} autoComplete={'email'} icon={<FaEnvelope className="text-indigo-600" />} name={'email'} onChange={handleChange} value={inputField.email} type={'email'} placeholder={'Enter your email'}  text={'User Name'}/>
-          <InputGroup error={error.phone} autoComplete={'phone'} icon={<FaPhoneAlt className="text-indigo-600" />} name={'phone'} onChange={handleChange} value={inputField.phone} type={'tel'} placeholder={'Enter your phone number'}  text={'User Name'}/>
+          <InputGroup error={error.email} autoComplete={'email'} icon={<FaEnvelope className="text-indigo-600" />} name={'email'} onChange={handleChange} value={inputField.email} type={'email'} placeholder={'Enter your email'}  text={'User Email'}/>
+          <InputGroup error={error.phone} autoComplete={'phone'} icon={<FaPhoneAlt className="text-indigo-600" />} name={'phone'} onChange={handleChange} value={inputField.phone} type={'tel'} placeholder={'Enter your phone number'}  text={'User Phone'}/>
           <InputGroup error={error.address} autoComplete={'address'} icon={<FaMapMarkerAlt className="text-indigo-600" />} name={'address'} onChange={handleChange} value={inputField.address} type={'text'} placeholder={'Enter your address'}  text={'Address'}/>
           <InputGroup error={error.password} autoComplete={'password'} icon={<FaLock className="text-indigo-600" />} name={'password'} onChange={handleChange} value={inputField.password} type={'password'} placeholder={'Enter your password'}  text={'Password'}/>
           {/* Submit Button */}
