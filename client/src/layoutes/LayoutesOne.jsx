@@ -5,9 +5,9 @@ import Bradcumb from '../components/Bradcumb'
 const LayoutesOne = () => {
   return (
     <>
-    <div className='flex '>
-        <Navbar/>
-      <div className='w-full flex flex-col'>
+    <div className='w-full flex '>
+        <Navbar />
+        <div className='w-full flex flex-col'>
         <Bradcumb/>
         <Outlet/>
       </div>

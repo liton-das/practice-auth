@@ -58,13 +58,28 @@ const Navbar = () => {
   return (
     <>
       <nav className="w-[252px] h-screen shadow-2xl bg-white">
-        <NavLink to={"/"} className={"pt-12 pl-5 pr-[107px] flex items-center gap-4 text-[20px]"}><GoGraph />DashBoard</NavLink>
-        <p className="mt-[51px] border-b border-slate-200 pb-2  pl-10 text-[13px] font-inter">Admin Panel</p>
+        <NavLink to={"/"} className={"pt-12 pl-5 pr-[107px] flex items-center gap-4 text-[20px]"}>
+          <GoGraph />
+          DashBoard
+        </NavLink>
+        <p className="mt-[51px] border-b border-slate-200 pb-2  pl-10 text-[13px] font-inter">
+          Admin Panel
+        </p>
         {/* <Switch onChange={changeMode} /> Change Mode */}
-      <Divider type="vertical" />
-      <Menu defaultSelectedKeys={['1']} mode={mode} theme={theme} items={items} />
-      <NavLink to={"/"} className={"pl-6  flex items-center gap-2 text-[16px] text-sky-600 mb-2 font-inter "}>Orders</NavLink>
-      <NavLink to={"/"} className={"pl-6  flex items-center gap-2 text-[16px] text-sky-600 font-inter "}>Client List</NavLink>
+        <Divider type="vertical" />
+        <Menu defaultSelectedKeys={["1"]} mode={mode} theme={theme} items={items} />
+        <NavLink
+          to={"/"}
+          className={"pl-6  flex items-center gap-2 text-[16px] text-sky-600 mb-2 font-inter "}
+        >
+          Orders
+        </NavLink>
+        <NavLink
+          to={"/"}
+          className={"pl-6  flex items-center gap-2 text-[16px] text-sky-600 font-inter "}
+        >
+          Client List
+        </NavLink>
       </nav>
     </>
   );
