@@ -71,7 +71,10 @@ const deleteCategoryController = async(req,res)=>{
 // get category controller for admin
 const getAllCategoryController =async(req,res)=>{
     try {
-        const categories = await category.find()
+        const {limit,page}=req.query
+        const pageLimit= limit || 5
+        const pageSkip = (page - 1) * pageLimit
+        const categories = await category.find().skip(pageSkip)
         return res.status(200).json(categories)
     } catch (error) {
         return res.status(500).json({message:'Internal server error!'})

@@ -10,6 +10,7 @@ const LayoutesOne = () => {
         <div className='w-full flex flex-col'>
         <Bradcumb/>
         <Outlet/>
+       
       </div>
     </div>
     </>

@@ -3,8 +3,8 @@ import { NavLink } from 'react-router'
 // import CategoryLists from '../pages/categories/CategoryLists'
 const Bradcumb = () => {
   return (
-    <div className="w-full mb-2">
-      <div className="bg-white  border border-slate-200 shadow-2xs py-5 px-3">
+    <div className="w-[1188px] mb-2">
+      <div className="w-full bg-white  border border-slate-200 shadow-2xs py-5 px-3">
         <NavLink
           to={"/"}
           className={({ isActive }) => {
