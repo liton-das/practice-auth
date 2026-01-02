@@ -40,10 +40,17 @@ const Navbar = () => {
 
   const navigate = useNavigate()
   const user = Cookies.get('token')
-  const decoded = jwtDecode(user);
-  console.log(decoded.role)
+  console.log(user)
+  let decoded
+  
+  // console.log(decoded.role)
   useEffect(()=>{
-    if(decoded.role === 'user'){
+    if(!user){
+      navigate('/login')
+    }
+    if(user){
+      decoded = jwtDecode(user);
+    }else if(decoded != null || decoded.role == 'user'){
       navigate('/login')
     }
   },[])
