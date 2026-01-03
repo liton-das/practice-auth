@@ -3,7 +3,10 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useSearchParams } from "react-router";
 import moment from "moment"
+import { IoTrashSharp } from "react-icons/io5";
+import { FiEdit } from "react-icons/fi";
 import getToastMsg from "../../helpers/toastMsg";
+import { IoCheckmarkOutline } from "react-icons/io5";
 const CategoryLists = () => {
   const [allCategories, setCategories] = useState();
   const [searchParams]=useSearchParams()
@@ -53,6 +56,25 @@ const CategoryLists = () => {
       console.log(error.response.data.message);
     }
   }
+  // handleDelete function 
+  const handleDelete=async(id)=>{
+    try {
+      const deletedData= await axios.post(`http://localhost:4000/category/deleteCategory`,
+        {
+          id:id
+        },
+        {
+          headers: {
+            Authorization: `${user}`
+          }
+        }
+      )
+      getToastMsg.success(deletedData.data.message)
+      getCategories();
+    } catch (error) {
+      getToastMsg.error(error.response.data.message)
+    }
+  }
   // handleisOpen
   const HandleIsOpen=()=>{
     setUpdate(!isUpdate)
@@ -60,7 +82,6 @@ const CategoryLists = () => {
   useEffect(() => {
     getCategories();
   }, []);
-  console.log(allCategories);
   return (
     <div className="w-[1090px] flex bg-slate-100 pt-3  flex-col px-[18px]">
       {allCategories?.map((item) => (
@@ -109,23 +130,23 @@ const CategoryLists = () => {
                   </select>
                   <button
                     onClick={() => adminApproval(item._id)}
-                    className="cursor-pointer px-[9px] py-[7px] rounded-[5px] flex justify-center items-center bg-green-500 text-white"
+                    className="cursor-pointer w-7 h-7 rounded-full flex justify-center items-center bg-green-500 text-white"
                   >
-                    update
+                    <IoCheckmarkOutline className="text-[30px] p-[5px] font-bold"/>
                   </button>
                 </div>:
                 <button
                 onClick={()=>HandleIsOpen(item._id)}
-                className="cursor-pointer px-[9px] py-[7px] rounded-[5px] flex justify-center items-center bg-green-500 text-white"
+                className="cursor-pointer w-7 h-7 rounded-full flex justify-center items-center bg-green-500 text-white"
               >
-                edit
+                <FiEdit className="text-[30px] p-[5px]"/>
               </button>
               }
             </div>
 
             <div className="flex items-center gap-[18px]">
-              <button className="cursor-pointer px-[9px] py-[7px] rounded-[5px] flex justify-center items-center bg-rose-500 text-white">
-                delete
+              <button onClick={()=>handleDelete(item?._id)} className="cursor-pointer w-7 h-7 rounded-full flex justify-center items-center bg-rose-500 text-white">
+                <IoTrashSharp className="text-[30px] p-[5px]"/>
               </button>
             </div>
           </div>
