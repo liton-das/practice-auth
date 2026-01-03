@@ -39,7 +39,7 @@ const VerifyToken = () => {
               {loading ? (
                 <Button btnText={"Loading>>>>>>Loading<<<<<<"} type={"submit"} />
               ) : (
-                <Button btnText={"Login Account"} type={"submit"} />
+                <Button btnText={"Verify"} type={"submit"} />
               )}
             </div>
           </form>

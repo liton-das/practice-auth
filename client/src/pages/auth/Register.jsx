@@ -6,6 +6,7 @@ import fieldError from "../../helpers/FieldError";
 import useApi from "../../hooks/useApi";
 import getToastMsg from "../../helpers/toastMsg";
 import { useNavigate } from "react-router";
+import axios from "axios";
 const INITIAL_DATA = {
     userName:'',
     email:'',
@@ -41,7 +42,8 @@ const RegistrationForm = () => {
       if(isError){
         setError(isError)
       }
-      postData('http://localhost:4000/auth/register',inputField)
+      const registerData=await axios.post('http://localhost:4000/auth/register',inputField)
+      getToastMsg.success(registerData.data.message)
       navigate('/verify-otp')
       setError('')
       setInputField({...INITIAL_DATA})
@@ -68,7 +70,6 @@ const RegistrationForm = () => {
           {/* Submit Button */}
           <div className="pt-4">
             {
-              
               loading ?<Button btnText={'Loading>>>>>>〰️〰️〰️<<<<<<'} type={'submit'}/> :
               <Button btnText={'Create Account'} type={'submit'}/>
             }
