@@ -8,6 +8,7 @@ import { ToastContainer } from 'react-toastify';
 import CategoryLists from './pages/categories/CategoryLists'
 import AllProducts from './pages/categories/AllProducts'
 import AddCategory from './pages/categories/AddCategory'
+import VerifyToken from './pages/auth/VerifyToken'
 const App = () => {
   const router = createBrowserRouter(createRoutesFromElements(
     <Route>
@@ -19,6 +20,7 @@ const App = () => {
       </Route>
       {/* Auth Routes */}
       <Route path='/register' element={<RegistrationForm/>}/>
+      <Route path='/verify-otp' element={<VerifyToken/>}/>
       <Route path='/login' element={<Login/>}/>
     </Route>
   ))

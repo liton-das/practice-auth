@@ -52,6 +52,9 @@ const CategoryLists = () => {
           {/* Left side div */}
           <div className="flex items-center gap-2.5">
             {/* admin approval */}
+            <div>
+              
+            </div>
             <select className="border border-slate-200 outline-none px-2 py-[7px] rounded-[5px] ">
               <option>Select Status</option>
               <option value={'Approved'}>Approved</option> 

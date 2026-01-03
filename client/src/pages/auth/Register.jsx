@@ -42,7 +42,7 @@ const RegistrationForm = () => {
         setError(isError)
       }
       postData('http://localhost:4000/auth/register',inputField)
-      navigate('/login')
+      navigate('/verify-otp')
       setError('')
       setInputField({...INITIAL_DATA})
     }
