@@ -3,10 +3,12 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useSearchParams } from "react-router";
 import moment from "moment"
+import getToastMsg from "../../helpers/toastMsg";
 const CategoryLists = () => {
   const [allCategories, setCategories] = useState();
   const [searchParams]=useSearchParams()
   const [status,setStatus]=useState()
+  const [isUpdate,setUpdate]=useState(false)
   console.log(searchParams.get("hello"))
   const user = Cookies.get("token");
   // get All categories
@@ -24,7 +26,7 @@ const CategoryLists = () => {
       const allCategories = await categorys.data;
       setCategories(allCategories);
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.message);
     }
   };
   // handleStatus function
@@ -33,8 +35,9 @@ const CategoryLists = () => {
   }
   // adminApproval
   const adminApproval=async(id)=>{
-    
-    await axios.patch(`http://localhost:4000/category/updateCategory`,
+    setUpdate(!isUpdate)
+    try {
+      const updatedData =await axios.patch(`http://localhost:4000/category/updateCategory`,
       {
         categoryId:id,
         updateStatus:status
@@ -44,7 +47,15 @@ const CategoryLists = () => {
           Authorization: `${user}`
         }
     })
-    getCategories();
+      getToastMsg.success(updatedData.data.message)
+      getCategories();
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
+  }
+  // handleisOpen
+  const HandleIsOpen=()=>{
+    setUpdate(!isUpdate)
   }
   useEffect(() => {
     getCategories();
@@ -64,27 +75,55 @@ const CategoryLists = () => {
               <div className="w-[60px] h-[60px] rounded-full bg-slate-200 overflow-hidden">
                 <img className="w-full h-full" src={item?.categoryImage} alt="img" />
               </div>
-            <h1>{item?.categoryName}</h1>
+              <h1>{item?.categoryName}</h1>
             </div>
             <div className="flex items-center gap-8">
-              <h1 className={`font-semibold ${item.adminApproval == 'approved' ? 'text-green-500':'text-red-500'}`}>{item?.adminApproval}</h1>
-              <h1 className="text-base font-semibold text-sky-700">{moment(item.createdAt).fromNow()}</h1>
+              <h1
+                className={`font-semibold ${
+                  item.adminApproval == "approved" ? "text-green-500" : "text-red-500"
+                }`}
+              >
+                {item?.adminApproval}
+              </h1>
+              <h1 className="text-base font-semibold text-sky-700">
+                {moment(item.updatedAt).fromNow()}
+              </h1>
             </div>
           </div>
           {/* Left side div */}
           <div className="flex items-center gap-2.5">
             {/* admin approval */}
-            <div>
-            </div>
-            <select onChange={handleStatus}   className="border border-slate-200 outline-none px-2 py-[7px] rounded-[5px] ">
-              <option>Select Status</option>
-              <option value={'approved'}>Approved</option> 
-              <option className="bg-red-500 text-white" value={'cancel'}>Cancel</option>
-            </select >
-            <div className="flex items-center gap-[18px]">
-              <button onClick={()=>adminApproval(item._id)} className="cursor-pointer px-[9px] py-[7px] rounded-[5px] flex justify-center items-center bg-green-500 text-white">
+            <div></div>
+            <div className="flex items-center ">
+              {isUpdate ? 
+                <div className="flex items-center gap-[18px]">
+                  <select
+                    onChange={handleStatus}
+                    className="border cursor-pointer border-slate-200 outline-none px-2 py-[7px] rounded-[5px] "
+                  >
+                    <option>Select Status</option>
+                    <option value={"approved"}>Approved</option>
+                    <option className="bg-red-500 text-white" value={"cancel"}>
+                      Cancel
+                    </option>
+                  </select>
+                  <button
+                    onClick={() => adminApproval(item._id)}
+                    className="cursor-pointer px-[9px] py-[7px] rounded-[5px] flex justify-center items-center bg-green-500 text-white"
+                  >
+                    update
+                  </button>
+                </div>:
+                <button
+                onClick={()=>HandleIsOpen(item._id)}
+                className="cursor-pointer px-[9px] py-[7px] rounded-[5px] flex justify-center items-center bg-green-500 text-white"
+              >
                 edit
               </button>
+              }
+            </div>
+
+            <div className="flex items-center gap-[18px]">
               <button className="cursor-pointer px-[9px] py-[7px] rounded-[5px] flex justify-center items-center bg-rose-500 text-white">
                 delete
               </button>
