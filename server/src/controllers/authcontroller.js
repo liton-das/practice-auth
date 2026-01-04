@@ -44,7 +44,7 @@ const registerController = async (req, res) => {
         otpExpireTime:otpExpireTimeGenerator()
     })
    await user.save()
-   return res.status(201).json({message:'user created successfully'},user)
+   return res.status(201).json({message:'user created successfully',user})
   } catch (error) {
     return res.status(500).json({ message: "Internal server error", error });
   }

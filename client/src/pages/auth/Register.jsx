@@ -9,6 +9,7 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addNewUser } from "../../redux/featurs/UserSlice";
+import Cookies from "js-cookie"
 const INITIAL_DATA = {
     userName:'',
     email:'',
@@ -47,7 +48,9 @@ const RegistrationForm = () => {
       }
       const registerData=await axios.post('http://localhost:4000/auth/register',inputField)
       getToastMsg.success(registerData.data.message)
-      dispatch(addNewUser(registerData.data))
+      console.log(registerData.data.user)
+      Cookies.set('user',JSON.stringify(registerData.data.user))
+      // dispatch(addNewUser(registerData.data))
       navigate('/verify-otp')
       setError('')
       setInputField({...INITIAL_DATA})

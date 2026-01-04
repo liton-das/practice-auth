@@ -6,7 +6,7 @@ const userSlice=createSlice({
     name:'User',
     initialState:{
         userToken:Cookies.get('token') || null,
-        users:null
+        users:JSON.parse(Cookies.get('user')) || null
     },
     reducers:{
         addUser : (state,action)=>{

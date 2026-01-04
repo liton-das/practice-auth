@@ -9,6 +9,7 @@ import CategoryLists from './pages/categories/CategoryLists'
 import AllProducts from './pages/categories/AllProducts'
 import AddCategory from './pages/categories/AddCategory'
 import VerifyToken from './pages/auth/VerifyToken'
+import ResendOtp from './pages/auth/ResendOtp'
 const App = () => {
   const router = createBrowserRouter(createRoutesFromElements(
     <Route>
@@ -21,6 +22,7 @@ const App = () => {
       {/* Auth Routes */}
       <Route path='/register' element={<RegistrationForm/>}/>
       <Route path='/verify-otp' element={<VerifyToken/>}/>
+      <Route path='/resnd-otp' element={<ResendOtp/>}/>
       <Route path='/login' element={<Login/>}/>
     </Route>
   ))
