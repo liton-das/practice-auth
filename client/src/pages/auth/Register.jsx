@@ -7,6 +7,8 @@ import useApi from "../../hooks/useApi";
 import getToastMsg from "../../helpers/toastMsg";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addNewUser } from "../../redux/featurs/UserSlice";
 const INITIAL_DATA = {
     userName:'',
     email:'',
@@ -18,6 +20,7 @@ const RegistrationForm = () => {
     const [inputField,setInputField]=useState({...INITIAL_DATA})
     const [error,setError]=useState('')
     const {postData,allData,loading,errors}=useApi()
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     console.log(errors,'errors')
     console.log(allData.message,'All Data')
@@ -44,6 +47,7 @@ const RegistrationForm = () => {
       }
       const registerData=await axios.post('http://localhost:4000/auth/register',inputField)
       getToastMsg.success(registerData.data.message)
+      dispatch(addNewUser(registerData.data))
       navigate('/verify-otp')
       setError('')
       setInputField({...INITIAL_DATA})

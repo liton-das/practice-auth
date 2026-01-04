@@ -104,7 +104,9 @@ const loginController =async(req,res)=>{
       if(!isMatch) return res.status(404).json({message:'Invalid creadintial!'})
       const token = jwt.sign(
     {
+        userId:user._id,
         email:user.email,
+        userName:user.userName,
         role:user.userRole
     },
     process.env.SECRET_KEY,
