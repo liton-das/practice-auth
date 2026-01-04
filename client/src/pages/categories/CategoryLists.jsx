@@ -7,6 +7,7 @@ import { FiEdit } from "react-icons/fi";
 import getToastMsg from "../../helpers/toastMsg";
 import { IoCheckmarkOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
+import { jwtDecode } from "jwt-decode";
 const CategoryLists = () => {
   const [allCategories, setCategories] = useState();
   const [searchParams]=useSearchParams()
@@ -79,7 +80,16 @@ const CategoryLists = () => {
     setUpdate(!isUpdate)
   }
   useEffect(() => {
+    // check user token and validation
+        if (user || user != null) {
+          const currentUser = jwtDecode(user);
+          console.log(currentUser,'curr')
+          if(currentUser.role == 'user'){
+            navigate('/login')
+          }
+        }
     getCategories();
+    
   }, []);
   return (
     <div className="w-[1090px] flex bg-slate-100 pt-3  flex-col px-[18px]">

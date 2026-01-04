@@ -20,6 +20,14 @@ const Bradcumb = () => {
           }}
         >
           All Category
+        </NavLink> <span>/</span>
+        <NavLink
+          to={"/all-products"}
+          className={({ isActive }) => {
+           return `${isActive ? "text-sky-500" : "text-black"}`;
+          }}
+        >
+          All Products
         </NavLink>
       </div>
     </div>

@@ -50,7 +50,7 @@ const navigate = useNavigate()
     if (currentUser || currentUser != null) {
       const user = jwtDecode(currentUser);
       if(user.role === 'user'){
-        navigate('/login')
+       return navigate('/login')
       }
     }
   }, []);
