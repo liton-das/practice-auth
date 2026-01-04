@@ -9,6 +9,8 @@ import {
   AppstoreOutlined,
 } from '@ant-design/icons';
 import { Divider, Menu, Switch } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { addUser } from '../redux/featurs/UserSlice';
 const items = [
   {
     key: 'sub1',
@@ -38,22 +40,20 @@ const Navbar = () => {
   const [mode, setMode] = useState('inline');
   const [theme, setTheme] = useState('light');
 
-  const navigate = useNavigate()
-  const user = Cookies.get('token')
-  console.log(user)
-  let decoded
-  
-  // console.log(decoded.role)
-  useEffect(()=>{
-    if(!user){
-      navigate('/login')
+const currentUser=useSelector(state=>state.user.userToken)
+const navigate = useNavigate()
+  useEffect(() => {
+    if (currentUser === null) {
+      navigate("/login");
     }
-    if(user){
-      decoded = jwtDecode(user);
-    }else if(decoded != null || decoded.role == 'user'){
-      navigate('/login')
+    // check user token and validation
+    if (currentUser || currentUser != null) {
+      const user = jwtDecode(currentUser);
+      if(user.role === 'user'){
+        navigate('/login')
+      }
     }
-  },[])
+  }, []);
 
 
   const changeMode = value => {

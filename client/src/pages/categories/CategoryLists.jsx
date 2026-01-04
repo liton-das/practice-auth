@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useSearchParams } from "react-router";
 import moment from "moment"
 import { IoTrashSharp } from "react-icons/io5";
 import { FiEdit } from "react-icons/fi";
 import getToastMsg from "../../helpers/toastMsg";
 import { IoCheckmarkOutline } from "react-icons/io5";
+import { useSelector } from "react-redux";
 const CategoryLists = () => {
   const [allCategories, setCategories] = useState();
   const [searchParams]=useSearchParams()
   const [status,setStatus]=useState()
   const [isUpdate,setUpdate]=useState(false)
-  console.log(searchParams.get("hello"))
-  const user = Cookies.get("token");
+  const user = useSelector(state=>state.user.userToken)
   // get All categories
   const getCategories = async () => {
     try {
       const categorys = await axios.get(`http://localhost:4000/category/allCategories`,{
         params:{
-          limit:2,
+          limit:5,
           page:1,
         },
         headers: {

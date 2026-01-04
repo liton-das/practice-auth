@@ -1,12 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
+import Cookies from 'js-cookie'
+import { jwtDecode } from 'jwt-decode'
+
 const userSlice=createSlice({
-    name:'users',
+    name:'User',
     initialState:{
-        users:null
+        userToken:Cookies.get('token') || null
     },
     reducers:{
         addUser : (state,action)=>{
-            state.users.push(action.payload)
+            state.userToken = action.payload
         }
     }
 })

@@ -10,6 +10,7 @@ import getToastMsg from '../../helpers/toastMsg';
 import { useNavigate } from 'react-router'
 import { useDispatch } from 'react-redux';
 import { addUser } from '../../redux/featurs/UserSlice';
+import { jwtDecode } from 'jwt-decode';
 const INITIAL_DATA = {
     email:'',
     password:''
@@ -48,8 +49,9 @@ const Login = () => {
         try {
             const userData = await axios.post(`http://localhost:4000/auth/login`,inputField) 
             const user = await userData.data
-            Cookies.set('token',user.accessToken)
-            dispatch(addUser(user.userInfo))
+            const userToken=Cookies.set('token',user.accessToken)
+            
+            dispatch(addUser(userToken))
             getToastMsg.success(user.message)
             setLoading(false)
             setInputField(INITIAL_DATA)
